@@ -48,8 +48,13 @@
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/auth-ui-svelte": "^0.2.9",
     "@supabase/supabase-js": "^2.33.0",
+    "bits-ui": "^0.21.13",
+    "clsx": "^2.1.1",
     "glob": "^9.3.5",
+    "lucide-svelte": "^0.436.0",
     "resend": "^3.5.0",
-    "stripe": "^13.3.0"
+    "stripe": "^13.3.0",
+    "tailwind-merge": "^2.5.2",
+    "tailwind-variants": "^0.2.1"
   }
 }
