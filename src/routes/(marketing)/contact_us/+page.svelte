@@ -2,6 +2,11 @@
   import { enhance, applyAction } from "$app/forms"
   import type { SubmitFunction } from "@sveltejs/kit"
 
+  import { Input } from "$lib/components/ui/input"
+  import { Textarea } from "$lib/components/ui/textarea"
+  import { Button } from "$lib/components/ui/button"
+  import * as Card from "$lib/components/ui/card"
+
   let errors: { [fieldName: string]: string } = {}
   let loading = false
   let showSuccess = false
@@ -99,58 +104,55 @@
         </div>
       </div>
     {:else}
-      <div class="card card-bordered shadow-lg p-4 pt-6 mx-2 lg:mx-0 lg:p-6">
-        <form
-          class="form-widget flex flex-col"
-          method="POST"
-          action="?/submitContactUs"
-          use:enhance={handleSubmit}
-        >
-          {#each formFields as field}
-            <label for={field.id}>
-              <div class="flex flex-row">
-                <div class="text-base font-bold">{field.label}</div>
-                {#if errors[field.id]}
-                  <div class="text-red-600 flex-grow text-sm ml-2 text-right">
-                    {errors[field.id]}
-                  </div>
-                {/if}
-              </div>
-              {#if field.inputType === "textarea"}
-                <textarea
-                  id={field.id}
-                  name={field.id}
-                  autocomplete={field.autocomplete}
-                  rows={4}
-                  class="{errors[field.id]
-                    ? 'input-error'
-                    : ''} h-24 input-sm mt-1 input input-bordered w-full mb-3 text-base py-4"
-                ></textarea>
-              {:else}
-                <input
-                  id={field.id}
-                  name={field.id}
-                  type={field.inputType}
-                  autocomplete={field.autocomplete}
-                  class="{errors[field.id]
-                    ? 'input-error'
-                    : ''} input-sm mt-1 input input-bordered w-full mb-3 text-base py-4"
-                />
-              {/if}
-            </label>
-          {/each}
-
-          {#if Object.keys(errors).length > 0}
-            <p class="text-red-600 text-sm mb-2">
-              Please resolve above issues.
-            </p>
-          {/if}
-
-          <button class="btn btn-primary {loading ? 'btn-disabled' : ''}"
-            >{loading ? "Submitting" : "Submit"}</button
+      <Card.Root class="shadow-lg pt-6 mx-2 lg:mx-0 lg:p-6">
+        <Card.Content>
+          <form
+            class="flex flex-col"
+            method="POST"
+            action="?/submitContactUs"
+            use:enhance={handleSubmit}
           >
-        </form>
-      </div>
+            {#each formFields as field}
+              <label for={field.id}>
+                <div class="flex flex-row">
+                  <div class="text-base font-bold">{field.label}</div>
+                  {#if errors[field.id]}
+                    <div class="text-red-600 flex-grow text-sm ml-2 text-right">
+                      {errors[field.id]}
+                    </div>
+                  {/if}
+                </div>
+                {#if field.inputType === "textarea"}
+                  <Textarea
+                    id={field.id}
+                    name={field.id}
+                    autocomplete={field.autocomplete}
+                    class="{errors[field.id] ? 'border-destructive' : ''} my-2"
+                    rows={4}
+                  ></Textarea>
+                {:else}
+                  <Input
+                    id={field.id}
+                    name={field.id}
+                    type={field.inputType}
+                    autocomplete={field.autocomplete}
+                    class="{errors[field.id] ? 'border-destructive' : ''} my-2"
+                  />
+                {/if}
+              </label>
+            {/each}
+
+            {#if Object.keys(errors).length > 0}
+              <p class="text-red-600 text-sm mb-2">
+                Please resolve above issues.
+              </p>
+            {/if}
+            <Button disabled={loading} type="submit">
+              {loading ? "Submitting" : "Submit"}
+            </Button>
+          </form>
+        </Card.Content>
+      </Card.Root>
     {/if}
   </div>
 </div>
