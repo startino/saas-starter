@@ -55,7 +55,7 @@
 
 <div class="min-h-[70vh] pb-8 pt-[5vh] px-4">
   <h1 class="text-3xl font-bold text-center">Pricing</h1>
-  <h2 class="text-xl text-center text-slate-500 mt-1 pb-3">
+  <h2 class="text-xl text-center text-muted-foreground mt-1 pb-3">
     Totally free, scale to millions of users
   </h2>
 
