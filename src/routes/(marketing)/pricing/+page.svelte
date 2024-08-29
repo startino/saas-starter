@@ -139,7 +139,7 @@
     <div class="overflow-visible mx-auto max-w-xl mt-4">
       <table class="table">
         <thead
-          class="text-lg sticky top-0 bg-base-100 bg-opacity-50 z-10 backdrop-blur"
+          class="text-lg sticky top-0 bg-foreground text-background bg-opacity-50 z-10 backdrop-blur"
         >
           <tr>
             <th></th>
@@ -150,7 +150,7 @@
         <tbody>
           {#each planFeatures as feature}
             {#if feature.header}
-              <tr class="bg-base-200 font-bold">
+              <tr class="bg-foreground text-background font-bold">
                 <td colspan="3">{feature.name} </td>
               </tr>
             {:else}
