@@ -7,7 +7,7 @@ const config = {
   safelist: ["dark"],
   plugins: [
     require("@tailwindcss/typography"), 
-    require("daisyui")
+    // require("daisyui")
   ],
   theme: {
     container: {
