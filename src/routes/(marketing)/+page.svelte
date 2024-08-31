@@ -4,6 +4,8 @@
     WebsiteBaseUrl,
     WebsiteDescription,
   } from "./../../config"
+  import { buttonVariants } from "$lib/components/ui/button"
+  import * as Card from "$lib/components/ui/card"
 
   const ldJson = {
     "@context": "https://schema.org",
@@ -20,7 +22,7 @@
       name: "Free to host",
       description:
         "Instructions included for Cloudflare+Supabase. Free to start, and cost effective to scale.",
-      link: "https://github.com/CriticalMoments/CMSaasStarter?tab=readme-ov-file#suggested-hosting-stack",
+      link: "https://github.com/startino/saas-starter?tab=readme-ov-file#saas-starter-a-sveltekit-boilerplatetemplate",
       linkText: "Docs",
       newPage: true,
       svgContent: `<path d="M4.01207 15.7618L5.70156 10.6933C6.46758 8.39525 6.85059 7.24623 7.75684 7.03229C8.6631 6.81835 9.51953 7.67478 11.2324 9.38764L14.6114 12.7666C16.3242 14.4795 17.1807 15.3359 16.9667 16.2422C16.7528 17.1484 15.6038 17.5314 13.3057 18.2975L8.23724 19.987C5.47183 20.9088 4.08912 21.3697 3.35924 20.6398C2.62936 19.9099 3.09026 18.5272 4.01207 15.7618Z" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
@@ -263,17 +265,23 @@
           class="link font-bold"
           target="_blank">SvelteKit</a
         >,
-        <a href="https://supabase.com" class="link font-bold" target="_blank"
-          >Supabase</a
+        <a
+          href="https://supabase.com"
+          class="underline font-bold"
+          target="_blank">Supabase</a
         >,
-        <a href="https://stripe.com" class="link font-bold" target="_blank"
+        <a href="https://stripe.com" class="underline font-bold" target="_blank"
           >Stripe</a
         >,
-        <a href="https://tailwindcss.com" class="link font-bold" target="_blank"
-          >Tailwind</a
+        <a
+          href="https://tailwindcss.com"
+          class="underline font-bold"
+          target="_blank">Tailwind</a
         >,
-        <a href="https://daisyui.com" class="link font-bold" target="_blank"
-          >DaisyUI</a
+        <a
+          href="https://shadcn-svelte.com/"
+          class="underline font-bold"
+          target="_blank">Shadcn-Svelte</a
         >, and
         <a
           href="https://www.postgresql.org"
@@ -283,12 +291,14 @@
       </div>
       <div class="mt-6 md:mt-2">
         <a href="https://github.com/CriticalMoments/CMSaasStarter">
-          <button class="btn btn-primary btn-sm px-6">★ us on Github</button>
+          <button class={buttonVariants({ variant: "default" })}
+            >★ us on Github</button
+          >
         </a>
         <a
           href="https://github.com/CriticalMoments/CMSaasStarter/tree/main#saas-starter"
         >
-          <button class="btn btn-outline btn-primary btn-sm px-6 mt-3 mx-2"
+          <button class={buttonVariants({ variant: "outline" })}
             >Read the Docs</button
           >
         </a>
@@ -296,6 +306,7 @@
     </div>
   </div>
 </div>
+
 <div class="min-h-[60vh]">
   <div class="pt-20 pb-8 px-7">
     <div class="max-w-lg mx-auto text-center">
@@ -318,8 +329,10 @@
       class="flex gap-6 mt-12 max-w-[1064px] mx-auto place-content-center flex-wrap"
     >
       {#each features as feature}
-        <div class="card bg-white w-[270px] min-h-[300px] flex-none shadow-xl">
-          <div class="card-body items-center text-center p-[24px] pt-[32px]">
+        <Card.Root
+          class="flex items-center w-[270px] min-h-[300px] shadow-lg text-center"
+        >
+          <Card.Content class="grid justify-items-center">
             <div>
               <svg
                 width="50px"
@@ -333,99 +346,52 @@
                 {@html feature.svgContent}
               </svg>
             </div>
-            <h2 class="card-title">
+            <h2 class="text-xl font-bold">
               {feature.name}
             </h2>
-            <p class="text-sm">
+            <p class="text-sm mb-3">
               {feature.description}
             </p>
             {#if feature.link}
               <a
                 href={feature.link}
-                class="pb-4"
+                class="{buttonVariants({
+                  variant: 'outline',
+                  size: 'sm',
+                })} min-w-[100px]"
                 target={feature.newPage ? "_blank" : ""}
               >
-                <button
-                  class="btn btn-xs btn-outline rounded-full btn-primary min-w-[100px]"
-                  >{feature.linkText ? feature.linkText : "Try It"}</button
-                >
+                {feature.linkText ? feature.linkText : "Try It"}
               </a>
             {/if}
-          </div>
-        </div>
+          </Card.Content>
+        </Card.Root>
       {/each}
     </div>
   </div>
 </div>
-<div class="hero min-h-[60vh] mt-12">
-  <div class="hero-content text-center pb-16 pt-4 px-4">
-    <div class="max-w-lg">
-      <div
-        class="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent mt-4"
-      >
-        See it in Action
-      </div>
-      <div
-        class="flex flex-col lg:flex-row mt-8 gap-6 place-content-center content-center"
-      >
-        <div class="hidden md:block">
-          <a href="https://criticalmoments.io" target="_blank" class="link">
-            <div class="mockup-browser border">
-              <div class="mockup-browser-toolbar">
-                <div class="input" style="background:#eee;">
-                  https://criticalmoments.io
-                </div>
-              </div>
-              <div class="flex justify-center">
-                <img
-                  alt="Screenshot of criticalmoments.io homepage"
-                  class="aspect-[2044/1242]"
-                  src="/images/example-home.png"
-                />
-              </div>
-            </div>
-          </a>
-        </div>
-        <div class="md:hidden">
-          <a href="https://criticalmoments.io" target="_blank" class="link">
-            <div class="card shadow-xl border overflow-hidden">
-              <img
-                alt="Screenshot of criticalmoments.io homepage"
-                class="aspect-[2044/1242]"
-                src="/images/example-home.png"
-              />
-            </div></a
-          >
-        </div>
-        <div class="min-w-[270px] lg:min-w-[420px] flex mt-6 lg:mt-0">
-          <div class="my-auto">
-            <div class="px-4 text-lg md:text-xl">
-              <a href="https://criticalmoments.io" class="" target="_blank"
-                >SaaS Starter was created by <span
-                  class="font-bold whitespace-nowrap">Critical Moments</span
-                >: a SDK to to help mobile apps
-                <span class="underline decoration-secondary decoration-[3px]"
-                  >increase conversion rates and app-ratings.</span
-                ></a
-              >
-            </div>
-            <div class="px-4 mt-6 text-lg md:text-xl">
-              Our <a
-                href="https://criticalmoments.io"
-                class="link font-bold"
-                target="_blank">webpage</a
-              > is the best example of SaaS Starter with style and real content.
-            </div>
-            <div class="mt-4 text-large">
-              <a href="https://criticalmoments.io" target="_blank">
-                <button class="btn btn-primary btn-wide mt-3"
-                  >See it in Action</button
-                >
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
+<style>
+  .hero {
+    display: grid;
+    width: 100%;
+    place-items: center;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .hero > * {
+    grid-column-start: 1;
+    grid-row-start: 1;
+  }
+
+  .hero-content {
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 80rem /* 1280px */;
+    gap: 1rem /* 16px */;
+    padding: 1rem /* 16px */;
+  }
+</style>

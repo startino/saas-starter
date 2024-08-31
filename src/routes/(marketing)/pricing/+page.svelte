@@ -1,6 +1,7 @@
 <script lang="ts">
   import PricingModule from "./pricing_module.svelte"
   import { WebsiteName } from "./../../../config"
+  import * as Accordion from "$lib/components/ui/accordion"
 
   type PlanFeatureRow = {
     name: string
@@ -55,7 +56,7 @@
 
 <div class="min-h-[70vh] pb-8 pt-[5vh] px-4">
   <h1 class="text-3xl font-bold text-center">Pricing</h1>
-  <h2 class="text-xl text-center text-slate-500 mt-1 pb-3">
+  <h2 class="text-xl text-center text-muted-foreground mt-1 pb-3">
     Totally free, scale to millions of users
   </h2>
 
@@ -63,56 +64,44 @@
     <PricingModule callToAction="Get Started" highlightedPlanId="pro" />
     <h1 class="text-2xl font-bold text-center mt-24">Pricing FAQ</h1>
     <div class="flex place-content-center">
-      <div class="join join-vertical max-w-xl py-6 mx-auto">
-        <div class="collapse collapse-arrow join-item border border-primary">
-          <input type="radio" name="faq-accordion" />
-          <div class="collapse-title text-lg font-medium">
-            Is this template free to use?
-          </div>
-          <div class="collapse-content">
-            <p>Yup! This template is free to use for any project.</p>
-          </div>
-        </div>
-        <div class="collapse collapse-arrow join-item border border-primary">
-          <input type="radio" name="faq-accordion" />
-          <div class="collapse-title text-lg font-medium">
-            Why does a free template have a pricing page?
-          </div>
-          <div class="collapse-content">
-            <p>
-              The pricing page is part of the boilerplate. It shows how the
-              pricing page integrates into the billing portal and the Stripe
-              Checkout flows.
-            </p>
-          </div>
-        </div>
-        <div class="collapse collapse-arrow join-item border border-primary">
-          <input type="radio" name="faq-accordion" />
-          <div class="collapse-title text-lg font-medium">
-            What license is the template under?
-          </div>
-          <div class="collapse-content">
-            <p>The template is under the MIT license.</p>
-          </div>
-        </div>
-        <div class="collapse collapse-arrow join-item border border-primary">
-          <input type="radio" name="faq-accordion" />
-          <div class="collapse-title text-lg font-medium">
-            Can I try out purchase flows without real a credit card?
-          </div>
-          <div class="collapse-content">
-            <p>
-              Our demo page <a href="https://saasstarter.work" class="link"
-                >SaasStarter.work</a
-              > has a functional demo page, using Stripe's test environment.
-            </p>
-            <p class="mt-4">
-              You can use the credit card number 4242 4242 4242 4242 with any
-              future expiry date to test the payment and upgrade flows.
-            </p>
-          </div>
-        </div>
-      </div>
+      <Accordion.Root class="max-w-xl mx-auto">
+        <Accordion.Item value="faq1">
+          <Accordion.Trigger>Is this template free to use?</Accordion.Trigger>
+          <Accordion.Content>
+            Yup! This template is free to use for any project.
+          </Accordion.Content>
+        </Accordion.Item>
+
+        <Accordion.Item value="faq2">
+          <Accordion.Trigger
+            >Why does a free template have a pricing page?</Accordion.Trigger
+          >
+          <Accordion.Content>
+            The pricing page is part of the boilerplate. It shows how the
+            pricing page integrates into the billing portal and the Stripe
+            Checkout flows.
+          </Accordion.Content>
+        </Accordion.Item>
+
+        <Accordion.Item value="faq3">
+          <Accordion.Trigger>
+            What license is the template under?</Accordion.Trigger
+          >
+          <Accordion.Content>
+            The template is under the MIT license.
+          </Accordion.Content>
+        </Accordion.Item>
+
+        <Accordion.Item value="Is this template free to use?">
+          <Accordion.Trigger>
+            Can I try out purchase flows without real a credit card?</Accordion.Trigger
+          >
+          <Accordion.Content>
+            You can use the credit card number 4242 4242 4242 4242 with any
+            future expiry date to test the payment and upgrade flows.
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion.Root>
     </div>
 
     <svg style="display:none" version="2.0">
@@ -150,7 +139,7 @@
     <div class="overflow-visible mx-auto max-w-xl mt-4">
       <table class="table">
         <thead
-          class="text-lg sticky top-0 bg-base-100 bg-opacity-50 z-10 backdrop-blur"
+          class="text-lg sticky top-0 bg-foreground text-background bg-opacity-50 z-10 backdrop-blur"
         >
           <tr>
             <th></th>
@@ -161,7 +150,7 @@
         <tbody>
           {#each planFeatures as feature}
             {#if feature.header}
-              <tr class="bg-base-200 font-bold">
+              <tr class="bg-foreground text-background font-bold">
                 <td colspan="3">{feature.name} </td>
               </tr>
             {:else}
