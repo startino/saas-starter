@@ -2,7 +2,11 @@
   import { page } from "$app/stores"
   import { getContext } from "svelte"
   import type { Writable } from "svelte/store"
+  import { Check } from "lucide-svelte"
   import SettingsModule from "../settings_module.svelte"
+  import * as Card from "$lib/components/ui/card"
+  import * as Alert from "$lib/components/ui/alert"
+  import { buttonVariants } from "$lib/components/ui/button"
 
   let adminSection: Writable<string> = getContext("adminSection")
   adminSection.set("settings")
@@ -77,33 +81,38 @@
     ]}
   />
 {:else}
-  <div
-    class="card p-6 pb-7 mt-8 max-w-xl flex flex-col md:flex-row shadow max-w-md"
-  >
-    <div class="flex flex-col gap-y-4">
-      {#if usingOAuth}
-        <div class="font-bold">Set Password By Email</div>
+  <Card.Root>
+    <Card.Content>
+      <div class="flex flex-col gap-y-4">
+        {#if usingOAuth}
+          <div class="font-bold">Set Password By Email</div>
+          <div>
+            You use oAuth to sign in ("Sign in with Github" or similar). You can
+            continue to access your account using only oAuth if you like!
+          </div>
+        {:else}
+          <div class="font-bold">Change Password By Email</div>
+        {/if}
         <div>
-          You use oAuth to sign in ("Sign in with Github" or similar). You can
-          continue to access your account using only oAuth if you like!
+          The button below will send you an email at {session?.user?.email} which
+          will allow you to set your password.
         </div>
-      {:else}
-        <div class="font-bold">Change Password By Email</div>
-      {/if}
-      <div>
-        The button below will send you an email at {session?.user?.email} which will
-        allow you to set your password.
+        <button
+          class="{buttonVariants({ variant: 'outline' })} {sentEmail
+            ? 'hidden'
+            : ''}"
+          bind:this={sendBtn}
+          on:click={sendForgotPassword}
+          >Send Set Password Email
+        </button>
+        <Alert.Root>
+          <Check class="h-4 w-4 {sentEmail ? '' : 'hidden'}" />
+          <Alert.Description>
+            Sent email! Please check your inbox and use the link to set your
+            password.
+          </Alert.Description>
+        </Alert.Root>
       </div>
-      <button
-        class="btn btn-outline btn-wide {sentEmail ? 'hidden' : ''}"
-        bind:this={sendBtn}
-        on:click={sendForgotPassword}
-        >Send Set Password Email
-      </button>
-      <div class="success alert alert-success {sentEmail ? '' : 'hidden'}">
-        Sent email! Please check your inbox and use the link to set your
-        password.
-      </div>
-    </div>
-  </div>
+    </Card.Content>
+  </Card.Root>
 {/if}

@@ -1,0 +1,10 @@
+!/bin/sh
+set -e
+npm run format_check
+npm run lint
+npm run build
+npm run check
+npm run test_run
+
+# Optional: check for misspelled words. Uncomment line below after installing misspell tool https://github.com/client9/misspell?tab=readme-ov-file#install
+# misspell -error ./src README.md

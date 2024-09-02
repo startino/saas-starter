@@ -9,7 +9,7 @@ export const sharedAppearance = {
   variables: {
     default: {
       colors: {
-        brand: "hsl(var(--primary-foreground))",
+        brand: "hsl(var(--primary))",
         brandAccent: "hsl(var(--primary))",
         inputText: "hsl(var(--primary))",
         brandButtonText: "hsl(var(--primary-foreground))",
