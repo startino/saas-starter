@@ -1,16 +1,17 @@
 <script lang="ts">
   import { fly } from "svelte/transition"
   import { writable } from "svelte/store"
-  import { setContext } from "svelte"
   import { Menu } from "lucide-svelte"
 
   import { buttonVariants } from "$lib/components/ui/button"
   import * as Dialog from "$lib/components/ui/dialog"
+  import { setAdminSectionState } from "$lib/states/admin-section-state.svetle"
 
-  const adminSectionStore = writable("")
-  setContext("adminSection", adminSectionStore)
+  const adminSectionState = writable("")
+  setAdminSectionState(adminSectionState)
   let adminSection: string
-  adminSectionStore.subscribe((value) => {
+
+  adminSectionState.subscribe((value) => {
     adminSection = value
   })
 

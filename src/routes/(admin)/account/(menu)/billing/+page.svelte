@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { getContext } from "svelte"
-  import type { Writable } from "svelte/store"
   import SettingsModule from "../settings/settings_module.svelte"
   import PricingModule from "$lib/components/pricing_module/pricing_module.svelte"
   import { pricingPlans, defaultPlanId } from "$lib/pricing_plans"
+  import { getAdminSectionState } from "$lib/states/admin-section-state.svetle"
 
-  let adminSection: Writable<string> = getContext("adminSection")
+  let adminSection = getAdminSectionState()
+
   adminSection.set("billing")
 
   export let data

@@ -1,9 +1,8 @@
 <script lang="ts">
+  import { getAdminSectionState } from "$lib/states/admin-section-state.svetle"
   import SettingsModule from "../settings_module.svelte"
-  import { getContext } from "svelte"
-  import type { Writable } from "svelte/store"
 
-  let adminSection: Writable<string> = getContext("adminSection")
+  let adminSection = getAdminSectionState()
   adminSection.set("settings")
 
   export let data

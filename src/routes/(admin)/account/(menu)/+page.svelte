@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { getContext } from "svelte"
-  import type { Writable } from "svelte/store"
   import * as Alert from "$lib/components/ui/alert"
+  import { getAdminSectionState } from "$lib/states/admin-section-state.svetle"
 
-  let adminSection: Writable<string> = getContext("adminSection")
+  let adminSection = getAdminSectionState()
+
   adminSection.set("home")
 </script>
 
