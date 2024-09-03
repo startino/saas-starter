@@ -1,7 +1,8 @@
 <script lang="ts">
-  import "../../../../app.css"
   import { enhance, applyAction } from "$app/forms"
   import type { SubmitFunction } from "@sveltejs/kit"
+  import { Input } from "$lib/components/ui/input"
+  import { Button } from "$lib/components/ui/button"
 
   export let data
   export let form: FormAccountUpdateResult
@@ -46,71 +47,68 @@
       >
         <div class="mt-4">
           <label for="fullName">
-            <span class="text-l text-center">Your Name</span>
+            <span class="text-center">Your Name</span>
           </label>
-          <input
+          <Input
             id="fullName"
             name="fullName"
             type="text"
             placeholder="Your full name"
             class="{fieldError(form, 'fullName')
-              ? 'input-error'
-              : ''} mt-1 input input-bordered w-full max-w-xs"
+              ? 'border-destructive'
+              : ''} mt-1 w-full max-w-xs"
             value={form?.fullName ?? fullName}
-            maxlength="50"
           />
         </div>
 
         <div class="mt-4">
           <label for="companyName">
-            <span class="text-l text-center">Company Name</span>
+            <span class="text-center">Company Name</span>
           </label>
-          <input
+          <Input
             id="companyName"
             name="companyName"
             type="text"
             placeholder="Company name"
             class="{fieldError(form, 'companyName')
-              ? 'input-error'
-              : ''} mt-1 input input-bordered w-full max-w-xs"
+              ? 'border-destructive'
+              : ''} mt-1 w-full max-w-xs"
             value={form?.companyName ?? companyName}
-            maxlength="50"
           />
         </div>
 
         <div class="mt-4">
           <label for="website">
-            <span class="text-l text-center">Company Website</span>
+            <span class="text-center">Company Website</span>
           </label>
-          <input
+          <Input
             id="website"
             name="website"
             type="text"
             placeholder="Company website"
             class="{fieldError(form, 'website')
-              ? 'input-error'
-              : ''} mt-1 input input-bordered w-full max-w-xs"
+              ? 'border-destructive'
+              : ''} mt-1 w-full max-w-xs"
             value={form?.website ?? website}
-            maxlength="50"
           />
         </div>
 
         {#if form?.errorMessage}
-          <p class="text-red-700 text-sm font-bold text-center mt-3">
+          <p class="text-destructive text-sm font-bold text-center mt-3">
             {form?.errorMessage}
           </p>
         {/if}
         <div class="mt-4">
-          <input
+          <Button
             type="submit"
-            class="btn btn-primary mt-3 btn-wide"
+            class="mt-3"
             value={loading ? "..." : "Create Profile"}
             disabled={loading}
           />
         </div>
       </form>
 
-      <div class="text-sm text-slate-800 mt-14">
+      <div class="text-sm mt-14">
         You are logged in as {session?.user?.email}.
         <br />
         <a class="underline" href="/account/sign_out"> Sign out </a>
