@@ -1,6 +1,6 @@
 <script lang="ts">
-  import PricingModule from "./pricing_module.svelte"
-  import { WebsiteName } from "./../../../config"
+  import PricingModule from "$lib/components/pricing_module/pricing_module.svelte"
+  import { WebsiteName } from "$lib/config"
   import * as Accordion from "$lib/components/ui/accordion"
 
   type PlanFeatureRow = {

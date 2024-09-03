@@ -3,7 +3,7 @@ import {
   PUBLIC_SUPABASE_URL,
 } from "$env/static/public"
 import { createSupabaseLoadClient } from "@supabase/auth-helpers-sveltekit"
-import type { Database } from "../../../DatabaseDefinitions.js"
+import type { Database } from "$lib/DatabaseDefinitions"
 import { redirect } from "@sveltejs/kit"
 
 export const load = async ({ fetch, data, depends, url }) => {

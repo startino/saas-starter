@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { WebsiteBaseUrl } from "../../config"
+  import { WebsiteBaseUrl } from "$lib/config"
 
   // This email template is a fork of this MIT open source project: https://github.com/leemunroe/responsive-html-email-template
   // See full license https://github.com/leemunroe/responsive-html-email-template/blob/master/license.txt
