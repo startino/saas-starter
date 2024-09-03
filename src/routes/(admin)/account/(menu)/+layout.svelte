@@ -14,6 +14,8 @@
     adminSection = value
   })
 
+  let open = true
+
   const navItems = [
     {
       href: "/account",
@@ -40,7 +42,7 @@
     class="w-full h-20 flex items-center justify-between lg:block lg:w-80 lg:h-dvh p-4 bg-primary text-primary-foreground"
   >
     <a href="/" class="text-xl font-bold inline lg:hidden">Saas Starter</a>
-    <Dialog.Root>
+    <Dialog.Root bind:open>
       <Dialog.Trigger class="lg:hidden"
         ><button aria-label="open navigation"><Menu /></button></Dialog.Trigger
       >
@@ -54,8 +56,9 @@
               <a
                 {href}
                 class="{buttonVariants({
-                  variant: adminSection === section ? 'secondary' : 'ghost',
+                  variant: adminSection === section ? 'default' : 'ghost',
                 })} w-full"
+                on:click={() => (open = false)}
               >
                 {label}
               </a>
@@ -66,6 +69,7 @@
             <a
               href="/account/sign_out"
               class="{buttonVariants({ variant: 'ghost' })} w-full"
+              on:click={() => (open = false)}
             >
               Sign Out
             </a>

@@ -1,4 +1,4 @@
-!/bin/sh
+#!/bin/sh
 set -e
 npm run format_check
 npm run lint
