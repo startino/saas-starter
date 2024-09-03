@@ -5,6 +5,8 @@
   import Fuse from "fuse.js"
   import { goto } from "$app/navigation"
   import { dev } from "$app/environment"
+  import { Input } from "$lib/components/ui/input"
+  import { Label } from "$lib/components/ui/label"
 
   const fuseOptions = {
     keys: [
@@ -101,8 +103,8 @@
       Search
     </div>
   </div>
-  <label class="input input-bordered flex items-center gap-2 mt-10">
-    <input
+  <Label class="flex items-center gap-2 mt-10">
+    <Input
       id="search-input"
       type="text"
       class="grow"
@@ -111,20 +113,20 @@
       on:focus={() => (focusItem = 0)}
       aria-label="Search input"
     />
-  </label>
+  </Label>
 
   {#if loading && searchQuery.length > 0}
-    <div class="text-center mt-10 text-accent text-xl">Loading...</div>
+    <div class="text-center mt-10 text-xl">Loading...</div>
   {/if}
 
   {#if error}
-    <div class="text-center mt-10 text-accent text-xl">
+    <div class="text-center mt-10 text-xl">
       Error connecting to search. Please try again later.
     </div>
   {/if}
 
   {#if !loading && searchQuery.length > 0 && results.length === 0 && !error}
-    <div class="text-center mt-10 text-accent text-xl">No results found</div>
+    <div class="text-center mt-10 text-xl">No results found</div>
     {#if dev}
       <div class="text-center mt-4 font-mono">
         Development mode only message: if you're missing content, rebuild your
@@ -143,10 +145,10 @@
         <div class="flex-none w-6 md:w-32 bg-secondary"></div>
         <div class="py-6 px-6">
           <div class="text-xl">{result.item.title}</div>
-          <div class="text-sm text-accent">
+          <div class="text-sm">
             {result.item.path}
           </div>
-          <div class="text-slate-500">{result.item.description}</div>
+          <div class="text-muted-foreground">{result.item.description}</div>
         </div>
       </a>
     {/each}

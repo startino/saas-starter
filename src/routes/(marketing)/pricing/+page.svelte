@@ -132,12 +132,10 @@
     </svg>
 
     <h1 class="text-2xl font-bold text-center mt-16">Plan Features</h1>
-    <h2 class="text-xl text-center text-slate-500 mt-1 pb-3">
-      Example feature table
-    </h2>
+    <h2 class="text-xl text-center mt-1 pb-3">Example feature table</h2>
 
     <div class="overflow-visible mx-auto max-w-xl mt-4">
-      <table class="table">
+      <table class="table w-full">
         <thead
           class="text-lg sticky top-0 bg-foreground text-background bg-opacity-50 z-10 backdrop-blur"
         >
@@ -150,7 +148,7 @@
         <tbody>
           {#each planFeatures as feature}
             {#if feature.header}
-              <tr class="bg-foreground text-background font-bold">
+              <tr class="bg-foreground text-background font-bold p-2">
                 <td colspan="3">{feature.name} </td>
               </tr>
             {:else}

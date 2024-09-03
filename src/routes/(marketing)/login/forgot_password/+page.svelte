@@ -20,6 +20,6 @@
   appearance={sharedAppearance}
   additionalData={undefined}
 />
-<div class="text-l text-slate-800 mt-4">
+<div class="text-l text-primary mt-4">
   Remember your password? <a class="underline" href="/login/sign_in">Sign in</a>.
 </div>

@@ -16,8 +16,7 @@
 
 <a
   href="https://criticalmoments.io/blog/how_we_built_our_marketing_page"
-  target="_blank"
-  class="btn btn-primary">Read the Blog Post</a
+  target="_blank">Read the Blog Post</a
 >
 
 <p>

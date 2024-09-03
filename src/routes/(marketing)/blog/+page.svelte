@@ -1,5 +1,6 @@
 <script lang="ts">
   import { sortedBlogPosts, blogInfo } from "./posts"
+  import * as Card from "$lib/components/ui/card"
 </script>
 
 <svelte:head>
@@ -28,20 +29,22 @@
 
   {#each sortedBlogPosts as post}
     <a href={post.link}>
-      <div class="card my-6 bg-white shadow-xl flex-row overflow-hidden">
-        <div class="flex-none w-6 md:w-32 bg-secondary"></div>
-        <div class="py-6 px-6">
-          <div class="text-xl">{post.title}</div>
-          <div class="text-sm text-accent">
-            {post.parsedDate?.toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
+      <Card.Root class="my-6">
+        <Card.Content class="shadow-xl p-6 flex flex-row overflow-hidden">
+          <div class="flex-none w-6 md:w-32 bg-secondary"></div>
+          <div class="py-6 px-6">
+            <div class="text-xl">{post.title}</div>
+            <div class="text-sm text-accent">
+              {post.parsedDate?.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </div>
+            <div class="text-muted-foreground">{post.description}</div>
           </div>
-          <div class="text-slate-500">{post.description}</div>
-        </div>
-      </div>
+        </Card.Content>
+      </Card.Root>
     </a>
   {/each}
 </div>

@@ -4,7 +4,6 @@
   import * as DropDownMenu from "$lib/components/ui/dropdown-menu"
 
   import { WebsiteName } from "./../../config"
-  import "../../app.css"
 </script>
 
 <div class="flex py-4 bg-primary text-primary-foreground container mx-auto">
@@ -54,31 +53,28 @@
 <div class="">
   <div class="border-t max-w-[1000px] mx-auto"></div>
   <footer
-    class="footer p-10 gap-x-48 lg:gap-x-64 xl:gap-x-96 place-content-center text-base"
+    class="grid gap-y-6 md:grid-cols-[auto_auto] p-10 gap-x-48 lg:gap-x-64 xl:gap-x-96 place-content-center text-base"
   >
-    <nav>
-      <span class="footer-title opacity-80">Explore</span>
-      <a class="link link-hover mb-1" href="/">Overview</a>
-      <a class="link link-hover my-1" href="/pricing">Pricing</a>
-      <a class="link link-hover my-1" href="/blog">Blog</a>
-      <a class="link link-hover my-1" href="/contact_us">Contact Us</a>
-      <a
-        class="link link-hover my-1"
-        href="https://github.com/CriticalMoments/CMSaasStarter">Github</a
+    <nav class="grid gap-1 justify-center md:justify-end">
+      <span class="font-bold text-2xl mb-2 block opacity-80">Explore</span>
+      <a class="hover:underline" href="/">Overview</a>
+      <a class="hover:underline" href="/pricing">Pricing</a>
+      <a class="hover:underline" href="/blog">Blog</a>
+      <a class="hover:underline" href="/contact_us">Contact Us</a>
+      <a class="hover:underline" href="https://github.com/startino/saas-starter"
+        >Github</a
       >
     </nav>
     <aside>
-      <span class="footer-title opacity-80">Sponsor</span>
-      <a
-        class="link link-hover max-w-[260px]"
-        href="https://criticalmoments.io"
+      <span class="text-center font-bold text-2xl mb-2 block opacity-80"
+        >Startino</span
       >
+      <a class=" max-w-[260px]" href="https://criticalmoments.io">
         <img
-          alt="Critical Moments Logo"
-          src="/images/cm_logo.svg"
-          class="w-[180px] mb-3 aspect-[420/154]"
+          alt="Startino Logo"
+          src="/images/startino_logo.svg"
+          class="w-[150px] mb-3"
         />
-        Make mobile apps? Improve conversion rates and ratings with Critical Moments.
       </a>
     </aside>
   </footer>
