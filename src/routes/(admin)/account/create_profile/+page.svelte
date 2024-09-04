@@ -110,7 +110,7 @@
       </form>
 
       <div class="text-sm mt-14">
-        You are logged in as {session?.user?.email}.
+        You are logged in as {session?.user?.email ?? "an anonymous user"}.
         <br />
         <a class="underline" href="/account/sign_out"> Sign out </a>
       </div>

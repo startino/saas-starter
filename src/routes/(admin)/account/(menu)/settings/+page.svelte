@@ -36,13 +36,15 @@
   editLink="/account/settings/edit_profile"
 />
 
-<SettingsModule
-  title="Email"
-  editable={false}
-  fields={[{ id: "email", initialValue: session?.user?.email || "" }]}
-  editButtonTitle="Change Email"
-  editLink="/account/settings/change_email"
-/>
+{#if !session?.user.is_anonymous}
+  <SettingsModule
+    title="Email"
+    editable={false}
+    fields={[{ id: "email", initialValue: session?.user?.email || "" }]}
+    editButtonTitle="Change Email"
+    editLink="/account/settings/change_email"
+  />
+{/if}
 
 <SettingsModule
   title="Password"

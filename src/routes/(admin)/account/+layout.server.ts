@@ -1,7 +1,7 @@
 import { redirect } from "@sveltejs/kit"
 
 export const load = async ({ locals: { supabase, safeGetSession } }) => {
-  const { session } = await safeGetSession()
+  const { session, user } = await safeGetSession()
 
   if (!session) {
     redirect(303, "/login")
@@ -13,5 +13,5 @@ export const load = async ({ locals: { supabase, safeGetSession } }) => {
     .eq("id", session.user.id)
     .single()
 
-  return { session, profile }
+  return { session, profile, user }
 }
