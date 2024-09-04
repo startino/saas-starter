@@ -3,9 +3,8 @@ import {
   getOrCreateCustomerId,
   fetchSubscription,
 } from "$lib/helpers/subscription_helpers.server"
-import type { PageServerLoad } from "./$types"
 
-export const load: PageServerLoad = async ({
+export const load = async ({
   locals: { safeGetSession, supabaseServiceRole },
 }) => {
   const { session } = await safeGetSession()

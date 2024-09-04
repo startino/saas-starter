@@ -3,12 +3,11 @@ import {
   getOrCreateCustomerId,
   fetchSubscription,
 } from "$lib/helpers/subscription_helpers.server"
-import type { PageServerLoad } from "./$types"
 import { PRIVATE_STRIPE_API_KEY } from "$env/static/private"
 import Stripe from "stripe"
 const stripe = new Stripe(PRIVATE_STRIPE_API_KEY, { apiVersion: "2023-08-16" })
 
-export const load: PageServerLoad = async ({
+export const load = async ({
   params,
   url,
   locals: { safeGetSession, supabaseServiceRole },
