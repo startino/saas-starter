@@ -7,8 +7,9 @@ import { PRIVATE_SUPABASE_SERVICE_ROLE } from "$env/static/private"
 import { createSupabaseServerClient } from "@supabase/auth-helpers-sveltekit"
 import { createClient } from "@supabase/supabase-js"
 import type { Handle } from "@sveltejs/kit"
+import { sequence } from "@sveltejs/kit/hooks"
 
-export const handle: Handle = async ({ event, resolve }) => {
+const supabase: Handle = async ({ event, resolve }) => {
   event.locals.supabase = createSupabaseServerClient({
     supabaseUrl: PUBLIC_SUPABASE_URL,
     supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
@@ -31,7 +32,11 @@ export const handle: Handle = async ({ event, resolve }) => {
       data: { session },
     } = await event.locals.supabase.auth.getSession()
     if (!session) {
-      return { session: null, user: null }
+      const {
+        data: { session, user },
+      } = await event.locals.supabase.auth.signInAnonymously()
+
+      return { session, user }
     }
 
     const {
@@ -52,3 +57,5 @@ export const handle: Handle = async ({ event, resolve }) => {
     },
   })
 }
+
+export const handle = sequence(supabase)
