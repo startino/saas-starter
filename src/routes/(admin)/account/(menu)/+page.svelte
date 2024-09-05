@@ -1,10 +1,5 @@
 <script lang="ts">
   import * as Alert from "$lib/components/ui/alert"
-  import { getAdminSectionState } from "$lib/states/admin-section-state.svetle"
-
-  let adminSection = getAdminSectionState()
-
-  adminSection.set("home")
 </script>
 
 <svelte:head>

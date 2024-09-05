@@ -1,15 +1,10 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import type { Writable } from "svelte/store"
   import { Check } from "lucide-svelte"
   import SettingsModule from "../settings_module.svelte"
   import * as Card from "$lib/components/ui/card"
   import * as Alert from "$lib/components/ui/alert"
   import { buttonVariants } from "$lib/components/ui/button"
-  import { getAdminSectionState } from "$lib/states/admin-section-state.svetle"
-
-  let adminSection: Writable<string> = getAdminSectionState()
-  adminSection.set("settings")
 
   export let data
   let { session, supabase } = data

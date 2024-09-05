@@ -5,7 +5,7 @@
 
   // Module context
   type Props = {
-    highlightedPlanId: string
+    highlightedPlanId?: string
     callToAction: string
     currentPlanId: string
     center: boolean
