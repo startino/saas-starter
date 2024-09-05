@@ -4,7 +4,7 @@ import {
   PUBLIC_SUPABASE_ANON_KEY,
 } from "$env/static/public"
 import { PRIVATE_SUPABASE_SERVICE_ROLE } from "$env/static/private"
-import type { Handle } from "@sveltejs/kit"
+import { redirect, type Handle } from "@sveltejs/kit"
 import { sequence } from "@sveltejs/kit/hooks"
 import { createServerClient } from "@supabase/ssr"
 import { createClient } from "@supabase/supabase-js"
@@ -50,18 +50,9 @@ const supabase: Handle = async ({ event, resolve }) => {
       } = await event.locals.supabase.auth.signInAnonymously()
 
       return { session, user }
+    } else {
+      return { session, user: session.user }
     }
-
-    const {
-      data: { user },
-      error,
-    } = await event.locals.supabase.auth.getUser()
-    if (error) {
-      // JWT validation has failed
-      return { session: null, user: null }
-    }
-
-    return { session, user }
   }
 
   return resolve(event, {
@@ -71,4 +62,20 @@ const supabase: Handle = async ({ event, resolve }) => {
   })
 }
 
-export const handle = sequence(supabase)
+const authGuard: Handle = async ({ event, resolve }) => {
+  const session = await event.locals.safeGetSession()
+  if (event.url.pathname.startsWith("/login")) {
+    if (
+      session?.user?.is_anonymous &&
+      event.url.pathname === "/login/sign_up"
+    ) {
+      return resolve(event)
+    } else if (session) {
+      return redirect(303, "/account")
+    }
+  }
+
+  return resolve(event)
+}
+
+export const handle = sequence(supabase, authGuard)
