@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    WebsiteName,
-    WebsiteBaseUrl,
-    WebsiteDescription,
-  } from "./../../config"
+  import { WebsiteName, WebsiteBaseUrl, WebsiteDescription } from "$lib/config"
   import { buttonVariants } from "$lib/components/ui/button"
   import * as Card from "$lib/components/ui/card"
 

@@ -4,21 +4,35 @@ import {
   PUBLIC_SUPABASE_ANON_KEY,
 } from "$env/static/public"
 import { PRIVATE_SUPABASE_SERVICE_ROLE } from "$env/static/private"
-import { createSupabaseServerClient } from "@supabase/auth-helpers-sveltekit"
+import { redirect, type Handle } from "@sveltejs/kit"
+import { sequence } from "@sveltejs/kit/hooks"
+import { createServerClient } from "@supabase/ssr"
 import { createClient } from "@supabase/supabase-js"
-import type { Handle } from "@sveltejs/kit"
 
-export const handle: Handle = async ({ event, resolve }) => {
-  event.locals.supabase = createSupabaseServerClient({
-    supabaseUrl: PUBLIC_SUPABASE_URL,
-    supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
-    event,
-  })
+const supabase: Handle = async ({ event, resolve }) => {
+  event.locals.supabase = createServerClient(
+    PUBLIC_SUPABASE_URL,
+    PUBLIC_SUPABASE_ANON_KEY,
+    {
+      cookies: {
+        getAll() {
+          return event.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            event.cookies.set(name, value, { ...options, path: "/" }),
+          )
+        },
+      },
+    },
+  )
 
   event.locals.supabaseServiceRole = createClient(
     PUBLIC_SUPABASE_URL,
     PRIVATE_SUPABASE_SERVICE_ROLE,
-    { auth: { persistSession: false } },
+    {
+      auth: { persistSession: false },
+    },
   )
 
   /**
@@ -31,19 +45,14 @@ export const handle: Handle = async ({ event, resolve }) => {
       data: { session },
     } = await event.locals.supabase.auth.getSession()
     if (!session) {
-      return { session: null, user: null }
-    }
+      const {
+        data: { session, user },
+      } = await event.locals.supabase.auth.signInAnonymously()
 
-    const {
-      data: { user },
-      error,
-    } = await event.locals.supabase.auth.getUser()
-    if (error) {
-      // JWT validation has failed
-      return { session: null, user: null }
+      return { session, user }
+    } else {
+      return { session, user: session.user }
     }
-
-    return { session, user }
   }
 
   return resolve(event, {
@@ -52,3 +61,21 @@ export const handle: Handle = async ({ event, resolve }) => {
     },
   })
 }
+
+const authGuard: Handle = async ({ event, resolve }) => {
+  const session = await event.locals.safeGetSession()
+  if (event.url.pathname.startsWith("/login")) {
+    if (
+      session?.user?.is_anonymous &&
+      event.url.pathname === "/login/sign_up"
+    ) {
+      return resolve(event)
+    } else if (session) {
+      return redirect(303, "/account")
+    }
+  }
+
+  return resolve(event)
+}
+
+export const handle = sequence(supabase, authGuard)

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { pricingPlans } from "./pricing_plans"
+  import { pricingPlans } from "$lib/pricing_plans"
   import * as Card from "$lib/components/ui/card"
   import { buttonVariants } from "$lib/components/ui/button"
 

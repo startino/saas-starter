@@ -1,5 +1,5 @@
 import { SupabaseClient, Session, User } from "@supabase/supabase-js"
-import { Database } from "./DatabaseDefinitions"
+import { Database } from "$lib/DatabaseDefinitions"
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces

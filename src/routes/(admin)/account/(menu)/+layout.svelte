@@ -1,20 +1,24 @@
 <script lang="ts">
   import { fly } from "svelte/transition"
   import { writable } from "svelte/store"
-  import { setContext } from "svelte"
   import { Menu } from "lucide-svelte"
 
   import { buttonVariants } from "$lib/components/ui/button"
   import * as Dialog from "$lib/components/ui/dialog"
+  import { setAdminSectionState } from "$lib/states/admin-section-state.svetle"
 
-  const adminSectionStore = writable("")
-  setContext("adminSection", adminSectionStore)
+  export let data
+  let { session } = data
+
+  const adminSectionState = writable("")
+  setAdminSectionState(adminSectionState)
   let adminSection: string
-  adminSectionStore.subscribe((value) => {
+
+  adminSectionState.subscribe((value) => {
     adminSection = value
   })
 
-  let open = true
+  let open = false
 
   const navItems = [
     {
@@ -106,7 +110,17 @@
     </ul>
   </nav>
 
-  <div class="container px-6 lg:px-12 py-3 lg:py-6 overflow-y-scroll">
+  <div class="container px-6 lg:px-12 py-3 lg:py-6 overflow-y-scroll relative">
+    {#if session?.user.is_anonymous}
+      <p
+        class="text-sm bg-primary text-primary-foreground sticky px-4 py-2 text-center rounded-sm mb-4 md:text-base"
+      >
+        You're signed in as an anonymous user. <a
+          href="/login/sign_up"
+          class="underline">Sign Up to persist your changes</a
+        >
+      </p>
+    {/if}
     <slot />
   </div>
 </div>
