@@ -13,8 +13,8 @@
   }
 
   // Page state
-  let loading = false
-  let showSuccess = false
+  let loading = $state(false)
+  let showSuccess = $state(false)
 
   type Field = {
     inputType?: string // default is "text"
@@ -25,18 +25,33 @@
     maxlength?: number
   }
 
-  // Module context
-  export let editable = false
-  export let dangerous = false
-  export let title: string = ""
-  export let message: string = ""
-  export let fields: Field[]
-  export let formTarget: string = ""
-  export let successTitle = "Success"
-  export let successBody = ""
-  export let editButtonTitle: string = ""
-  export let editLink: string = ""
-  export let saveButtonTitle: string = "Save"
+  type Props = {
+    editable?: boolean
+    dangerous?: false
+    title?: string
+    message?: string
+    fields: Field[]
+    formTarget?: string
+    successTitle?: string
+    successBody?: string
+    editButtonTitle?: string
+    editLink?: string
+    saveButtonTitle?: string
+  }
+
+  let {
+    editable = false,
+    dangerous = false,
+    title = "",
+    message = "",
+    fields,
+    formTarget = "",
+    successTitle = "Success",
+    successBody = "",
+    editButtonTitle = "",
+    editLink = "",
+    saveButtonTitle = "Save",
+  }: Props = $props()
 
   const handleSubmit: SubmitFunction = () => {
     loading = true
