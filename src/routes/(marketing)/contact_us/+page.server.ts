@@ -62,7 +62,7 @@ export const actions = {
         company_name: company,
         phone,
         message_body: message,
-        updated_at: new Date(),
+        updated_at: new Date().toISOString(),
       })
 
     if (insertError) {

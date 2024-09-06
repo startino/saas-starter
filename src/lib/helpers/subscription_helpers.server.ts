@@ -64,7 +64,6 @@ export const getOrCreateCustomerId = async ({
     .insert({
       user_id: session.user.id,
       stripe_customer_id: customer.id,
-      updated_at: new Date(),
     })
 
   if (insertError) {

@@ -3,7 +3,7 @@ import {
   PUBLIC_SUPABASE_URL,
 } from "$env/static/public"
 import { createBrowserClient } from "@supabase/ssr"
-import type { Database } from "$lib/DatabaseDefinitions"
+import type { Tables } from "$lib/DatabaseDefinitions"
 import { redirect } from "@sveltejs/kit"
 
 export const load = async ({ data, depends, url }) => {
@@ -18,8 +18,7 @@ export const load = async ({ data, depends, url }) => {
     data: { session },
   } = await supabase.auth.getSession()
 
-  const profile: Database["public"]["Tables"]["profiles"]["Row"] | null =
-    data.profile
+  const profile: Tables<"profiles"> | null = data.profile
 
   const createProfilePath = "/account/create_profile"
   const signOutPath = "/account/sign_out"
@@ -35,9 +34,7 @@ export const load = async ({ data, depends, url }) => {
   return { supabase, session, profile }
 }
 
-export const _hasFullProfile = (
-  profile: Database["public"]["Tables"]["profiles"]["Row"] | null,
-) => {
+export const _hasFullProfile = (profile: Tables<"profiles"> | null) => {
   if (!profile) {
     return false
   }
