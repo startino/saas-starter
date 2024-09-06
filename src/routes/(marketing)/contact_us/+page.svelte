@@ -7,9 +7,9 @@
   import { Button } from "$lib/components/ui/button"
   import * as Card from "$lib/components/ui/card"
 
-  let errors: { [fieldName: string]: string } = {}
-  let loading = false
-  let showSuccess = false
+  let errors = $state<{ [fieldName: string]: string }>({})
+  let loading = $state(false)
+  let showSuccess = $state(false)
 
   const formFields = [
     {
@@ -117,7 +117,9 @@
                 <div class="flex flex-row">
                   <div class="text-base font-bold">{field.label}</div>
                   {#if errors[field.id]}
-                    <div class="text-red-600 flex-grow text-sm ml-2 text-right">
+                    <div
+                      class="text-destructive flex-grow text-sm ml-2 text-right"
+                    >
                       {errors[field.id]}
                     </div>
                   {/if}
@@ -143,7 +145,7 @@
             {/each}
 
             {#if Object.keys(errors).length > 0}
-              <p class="text-red-600 text-sm mb-2">
+              <p class="text-destructive text-sm mb-2">
                 Please resolve above issues.
               </p>
             {/if}

@@ -1,12 +1,7 @@
 <script lang="ts">
   import SettingsModule from "./settings_module.svelte"
-  import { getAdminSectionState } from "$lib/states/admin-section-state.svetle"
 
-  let adminSection = getAdminSectionState()
-
-  adminSection.set("settings")
-
-  export let data
+  let { data } = $props()
   let { session, profile } = data
 </script>
 

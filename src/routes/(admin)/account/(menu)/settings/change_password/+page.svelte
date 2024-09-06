@@ -1,17 +1,12 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import type { Writable } from "svelte/store"
   import { Check } from "lucide-svelte"
   import SettingsModule from "../settings_module.svelte"
   import * as Card from "$lib/components/ui/card"
   import * as Alert from "$lib/components/ui/alert"
   import { buttonVariants } from "$lib/components/ui/button"
-  import { getAdminSectionState } from "$lib/states/admin-section-state.svetle"
 
-  let adminSection: Writable<string> = getAdminSectionState()
-  adminSection.set("settings")
-
-  export let data
+  let { data } = $props()
   let { session, supabase } = data
 
   // True if definitely has a password, but can be false if they
@@ -27,11 +22,13 @@
     ? true
     : false
 
-  let sendBtn: HTMLButtonElement
-  let sentEmail = false
+  let sendBtn = $state<HTMLButtonElement>()
+  let sentEmail = $state(false)
   let sendForgotPassword = () => {
-    sendBtn.disabled = true
-    sendBtn.textContent = "Sending..."
+    if (sendBtn) {
+      sendBtn.disabled = true
+      sendBtn.textContent = "Sending..."
+    }
     let email = session?.user.email
     if (email) {
       supabase.auth
@@ -102,7 +99,7 @@
             ? 'hidden'
             : ''}"
           bind:this={sendBtn}
-          on:click={sendForgotPassword}
+          onclick={sendForgotPassword}
           >Send Set Password Email
         </button>
         <Alert.Root>

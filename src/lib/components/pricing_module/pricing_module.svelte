@@ -4,10 +4,19 @@
   import { buttonVariants } from "$lib/components/ui/button"
 
   // Module context
-  export let highlightedPlanId: string = ""
-  export let callToAction: string
-  export let currentPlanId: string = ""
-  export let center = true
+  type Props = {
+    highlightedPlanId?: string
+    callToAction: string
+    currentPlanId?: string
+    center?: boolean
+  }
+
+  let {
+    highlightedPlanId = "",
+    callToAction,
+    currentPlanId = "",
+    center = true,
+  }: Props = $props()
 </script>
 
 <div

@@ -20,8 +20,8 @@
 
   let fuse: Fuse<Result> | undefined
 
-  let loading = true
-  let error = false
+  let loading = $state(true)
+  let error = $state(false)
   onMount(async () => {
     try {
       const response = await fetch("/search/api.json")
@@ -50,21 +50,22 @@
       path: string
     }
   }
-  let results: Result[] = []
+
+  let results = $state<Result[]>([])
 
   // searchQuery is $page.url.hash minus the "#" at the beginning if present
-  let searchQuery = decodeURIComponent($page.url.hash.slice(1) ?? "")
-  $: {
+  let searchQuery = $state(decodeURIComponent($page.url.hash.slice(1) ?? ""))
+
+  $effect(() => {
     if (fuse) {
       results = fuse.search(searchQuery)
     }
-  }
-  // Update the URL hash when searchQuery changes so the browser can bookmark/share the search results
-  $: {
+
+    // Update the URL hash when searchQuery changes so the browser can bookmark/share the search results
     if (browser && window.location.hash.slice(1) !== searchQuery) {
       goto("#" + searchQuery, { keepFocus: true })
     }
-  }
+  })
 
   let focusItem = 0
   function onKeyDown(event: KeyboardEvent) {
@@ -86,7 +87,7 @@
   }
 </script>
 
-<svelte:window on:keydown={onKeyDown} />
+<svelte:window onkeydown={onKeyDown} />
 
 <svelte:head>
   <title>Search</title>
@@ -110,7 +111,7 @@
       class="grow"
       placeholder="Search"
       bind:value={searchQuery}
-      on:focus={() => (focusItem = 0)}
+      onfocus={() => (focusItem = 0)}
       aria-label="Search input"
     />
   </Label>

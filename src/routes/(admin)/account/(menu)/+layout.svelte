@@ -1,42 +1,46 @@
 <script lang="ts">
   import { fly } from "svelte/transition"
-  import { writable } from "svelte/store"
   import { Menu } from "lucide-svelte"
 
   import { buttonVariants } from "$lib/components/ui/button"
   import * as Dialog from "$lib/components/ui/dialog"
-  import { setAdminSectionState } from "$lib/states/admin-section-state.svetle"
+  import { page } from "$app/stores"
 
-  export let data
+  let { data, children } = $props()
+
   let { session } = data
 
-  const adminSectionState = writable("")
-  setAdminSectionState(adminSectionState)
-  let adminSection: string
+  let open = $state(false)
 
-  adminSectionState.subscribe((value) => {
-    adminSection = value
+  class NavItem {
+    href: string
+    label: string
+    active: boolean
+
+    constructor(
+      href: string,
+      label: string,
+      isActive: (href: string) => boolean,
+    ) {
+      this.href = href
+      this.label = label
+      this.active = isActive(this.href)
+    }
+  }
+
+  let navItems = $state<NavItem[]>([])
+
+  $effect(() => {
+    navItems = [
+      new NavItem("/account", "home", (href) => $page.url.pathname === href),
+      new NavItem("/account/billing", "Billing", (href) =>
+        $page.url.pathname.startsWith(href),
+      ),
+      new NavItem("/account/settings", "Setting", (href) =>
+        $page.url.pathname.startsWith(href),
+      ),
+    ]
   })
-
-  let open = false
-
-  const navItems = [
-    {
-      href: "/account",
-      section: "home",
-      label: "Home",
-    },
-    {
-      href: "/account/billing",
-      section: "billing",
-      label: "Billing",
-    },
-    {
-      href: "/account/settings",
-      section: "settings",
-      label: "Settings",
-    },
-  ]
 </script>
 
 <div
@@ -55,25 +59,25 @@
         class="left-auto right-0 flex h-dvh max-h-screen w-full max-w-lg translate-x-1 flex-col overflow-y-scroll border-y-0 sm:rounded-none"
       >
         <ul class="flex flex-col">
-          {#each navItems as { href, section, label }}
+          {#each navItems as { href, label, active }}
             <li class="my-1">
               <a
                 {href}
                 class="{buttonVariants({
-                  variant: adminSection === section ? 'default' : 'ghost',
+                  variant: active ? 'default' : 'ghost',
                 })} w-full"
-                on:click={() => (open = false)}
+                onclick={() => (open = false)}
               >
                 {label}
               </a>
             </li>
           {/each}
-          <span class="flex-grow" />
+          <span class="flex-grow"></span>
           <li>
             <a
               href="/account/sign_out"
               class="{buttonVariants({ variant: 'ghost' })} w-full"
-              on:click={() => (open = false)}
+              onclick={() => (open = false)}
             >
               Sign Out
             </a>
@@ -86,19 +90,19 @@
         <a href="/" class="text-xl font-bold">Saas Starter</a>
       </li>
 
-      {#each navItems as { href, section, label }}
+      {#each navItems as item}
         <li class="my-1">
           <a
-            {href}
+            href={item.href}
             class="{buttonVariants({
-              variant: adminSection === section ? 'secondary' : 'ghost',
+              variant: item.active ? 'secondary' : 'ghost',
             })} w-full"
           >
-            {label}
+            {item.label}
           </a>
         </li>
       {/each}
-      <span class="flex-grow" />
+      <span class="flex-grow"></span>
       <li>
         <a
           href="/account/sign_out"
@@ -121,6 +125,7 @@
         >
       </p>
     {/if}
-    <slot />
+
+    {@render children()}
   </div>
 </div>

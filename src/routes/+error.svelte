@@ -1,16 +1,35 @@
-<script>
-  import "../app.css"
+<script lang="ts">
   import { page } from "$app/stores"
+
+  const { status, error } = $page
 </script>
 
-<div class="hero min-h-[100vh]">
-  <div class="hero-content text-center">
-    <div class="max-w-lg">
-      <h1 class="text-5xl font-bold">This is embarrassing...</h1>
-      <p class="py-6 text-2xl">There was an error: {$page?.error?.message}</p>
-      <div>
-        <a href="/" class="btn btn-primary btn-wide">Return Home</a>
-      </div>
+<svelte:head>
+  <title>{status} {error?.message.toString()}</title>
+</svelte:head>
+
+<main
+  class="grid h-screen min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8"
+>
+  <div class="text-center">
+    <p class="text-base font-semibold text-primary">{status}</p>
+    <h1
+      class="mt-4 text-3xl font-bold tracking-tight text-foreground sm:text-5xl"
+    >
+      This is embarrassing...
+    </h1>
+    <p class="mt-6 text-base leading-7 text-foreground/70">
+      {status == 404
+        ? "Sorry, we couldn't find what you were looking for."
+        : (error?.message ?? "")}
+    </p>
+    <div class="mt-10 flex items-center justify-center gap-x-6">
+      <a
+        href="/"
+        class="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      >
+        Return Home
+      </a>
     </div>
   </div>
-</div>
+</main>
