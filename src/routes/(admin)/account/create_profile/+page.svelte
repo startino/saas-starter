@@ -4,15 +4,14 @@
   import { Input } from "$lib/components/ui/input"
   import { Button } from "$lib/components/ui/button"
 
-  export let data
-  export let form: FormAccountUpdateResult
+  let { data, form } = $props()
 
   let { session, profile } = data
 
-  let loading = false
-  let fullName: string = profile?.full_name ?? ""
-  let companyName: string = profile?.company_name ?? ""
-  let website: string = profile?.website ?? ""
+  let loading = $state(false)
+  let fullName = profile?.full_name ?? ""
+  let companyName = profile?.company_name ?? ""
+  let website = profile?.website ?? ""
 
   const fieldError = (liveForm: FormAccountUpdateResult, name: string) => {
     let errors = liveForm?.errorFields ?? []

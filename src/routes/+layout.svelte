@@ -3,6 +3,8 @@
   import { navigating } from "$app/stores"
   import { expoOut } from "svelte/easing"
   import { slide } from "svelte/transition"
+
+  let { children } = $props()
 </script>
 
 {#if $navigating}
@@ -18,4 +20,4 @@
     in:slide={{ delay: 100, duration: 12000, axis: "x", easing: expoOut }}
   ></div>
 {/if}
-<slot />
+{@render children()}

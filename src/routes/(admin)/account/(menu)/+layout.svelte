@@ -6,10 +6,11 @@
   import * as Dialog from "$lib/components/ui/dialog"
   import { page } from "$app/stores"
 
-  export let data
+  let { data, children } = $props()
+
   let { session } = data
 
-  let open = false
+  let open = $state(false)
 
   class NavItem {
     href: string
@@ -27,15 +28,19 @@
     }
   }
 
-  $: navItems = [
-    new NavItem("/account", "home", (href) => $page.url.pathname === href),
-    new NavItem("/account/billing", "Billing", (href) =>
-      $page.url.pathname.startsWith(href),
-    ),
-    new NavItem("/account/settings", "Setting", (href) =>
-      $page.url.pathname.startsWith(href),
-    ),
-  ]
+  let navItems = $state<NavItem[]>([])
+
+  $effect(() => {
+    navItems = [
+      new NavItem("/account", "home", (href) => $page.url.pathname === href),
+      new NavItem("/account/billing", "Billing", (href) =>
+        $page.url.pathname.startsWith(href),
+      ),
+      new NavItem("/account/settings", "Setting", (href) =>
+        $page.url.pathname.startsWith(href),
+      ),
+    ]
+  })
 </script>
 
 <div
@@ -61,7 +66,7 @@
                 class="{buttonVariants({
                   variant: active ? 'default' : 'ghost',
                 })} w-full"
-                on:click={() => (open = false)}
+                onclick={() => (open = false)}
               >
                 {label}
               </a>
@@ -72,7 +77,7 @@
             <a
               href="/account/sign_out"
               class="{buttonVariants({ variant: 'ghost' })} w-full"
-              on:click={() => (open = false)}
+              onclick={() => (open = false)}
             >
               Sign Out
             </a>
@@ -120,6 +125,7 @@
         >
       </p>
     {/if}
-    <slot />
+
+    {@render children()}
   </div>
 </div>

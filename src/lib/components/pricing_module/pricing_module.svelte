@@ -7,8 +7,8 @@
   type Props = {
     highlightedPlanId?: string
     callToAction: string
-    currentPlanId: string
-    center: boolean
+    currentPlanId?: string
+    center?: boolean
   }
 
   let {

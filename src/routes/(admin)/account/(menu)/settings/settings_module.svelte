@@ -27,7 +27,7 @@
 
   type Props = {
     editable?: boolean
-    dangerous?: false
+    dangerous?: boolean
     title?: string
     message?: string
     fields: Field[]

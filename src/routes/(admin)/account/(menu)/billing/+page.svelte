@@ -3,7 +3,7 @@
   import PricingModule from "$lib/components/pricing_module/pricing_module.svelte"
   import { pricingPlans, defaultPlanId } from "$lib/pricing_plans"
 
-  export let data
+  let { data } = $props()
 
   let currentPlanId = data.currentPlanId ?? defaultPlanId
   let currentPlanName = pricingPlans.find(
@@ -19,7 +19,8 @@
   {data.isActiveCustomer ? "Billing" : "Select a Plan"}
 </h1>
 <div>
-  View our <a href="/pricing" target="_blank" class="link">pricing page</a> for details.
+  View our <a href="/pricing" target="_blank" class="underline">pricing page</a>
+  for details.
 </div>
 
 {#if !data.isActiveCustomer}
@@ -29,7 +30,7 @@
 
   {#if data.hasEverHadSubscription}
     <div class="mt-10">
-      <a href="/account/billing/manage" class="link">View past invoices</a>
+      <a href="/account/billing/manage" class="underline">View past invoices</a>
     </div>
   {/if}
 {:else}
