@@ -1,5 +1,13 @@
 import { fail, redirect } from "@sveltejs/kit"
 import { sendAdminEmail, sendUserEmail } from "$lib/mailer"
+import { zod } from "sveltekit-superforms/adapters"
+import { setError, superValidate } from "sveltekit-superforms"
+import {
+  profileSchema,
+  emailSchema,
+  passwordSchema,
+  deleteAccountSchema,
+} from "$lib/schemas"
 
 export const actions = {
   toggleEmailSubscription: async ({ locals: { supabase, safeGetSession } }) => {
@@ -36,40 +44,27 @@ export const actions = {
       redirect(303, "/login")
     }
 
-    const formData = await request.formData()
-    const email = formData.get("email") as string
+    const form = await superValidate(request, zod(emailSchema))
 
-    let validationError
-    if (!email || email === "") {
-      validationError = "An email address is required"
+    if (!form.valid) {
+      return fail(400, { form })
     }
-    // Dead simple check -- there's no standard here (which is followed),
-    // and lots of errors will be missed until we actually email to verify, so
-    // just do that
-    else if (!email.includes("@")) {
-      validationError = "A valid email address is required"
-    }
-    if (validationError) {
-      return fail(400, {
-        errorMessage: validationError,
-        errorFields: ["email"],
-        email,
-      })
-    }
-
     // Supabase does not change the email until the user verifies both
     // if 'Secure email change' is enabled in the Supabase dashboard
-    const { error } = await supabase.auth.updateUser({ email: email })
+    const { error } = await supabase.auth.updateUser({ email: form.data.email })
 
     if (error) {
-      return fail(500, {
-        errorMessage: "Unknown error. If this persists please contact us.",
-        email,
-      })
+      return setError(
+        form,
+        "Unknown error. If this persists please contact us.",
+        {
+          status: 500,
+        },
+      )
     }
 
     return {
-      email,
+      form,
     }
   },
   updatePassword: async ({ request, locals: { supabase, safeGetSession } }) => {
@@ -78,69 +73,31 @@ export const actions = {
       redirect(303, "/login")
     }
 
-    const formData = await request.formData()
-    const newPassword1 = formData.get("newPassword1") as string
-    const newPassword2 = formData.get("newPassword2") as string
-    const currentPassword = formData.get("currentPassword") as string
+    const form = await superValidate(request, zod(passwordSchema))
 
     // Can check if we're a "password recovery" session by checking session amr
     // let currentPassword take priority if provided (user can use either form)
     // @ts-expect-error: we ignore because Supabase does not maintain an AMR typedef
     const recoveryAmr = session.user?.amr?.find((x) => x.method === "recovery")
-    const isRecoverySession = recoveryAmr && !currentPassword
+    const isRecoverySession = recoveryAmr && !form.data.currentPassword
 
     // if this is password recovery session, check timestamp of recovery session
     if (isRecoverySession) {
       const timeSinceLogin = Date.now() - recoveryAmr.timestamp * 1000
       if (timeSinceLogin > 1000 * 60 * 15) {
         // 15 mins in milliseconds
-        return fail(400, {
-          errorMessage:
-            'Recovery code expired. Please log out, then use "Forgot Password" on the sign in page to reset your password. Codes are valid for 15 minutes.',
-          errorFields: [],
-          newPassword1,
-          newPassword2,
-          currentPassword: "",
-        })
+        return setError(
+          form,
+          'Recovery code expired. Please log out, then use "Forgot Password" on the sign in page to reset your password. Codes are valid for 15 minutes.',
+          {
+            status: 400,
+          },
+        )
       }
     }
 
-    let validationError
-    const errorFields = []
-    if (!newPassword1) {
-      validationError = "You must type a new password"
-      errorFields.push("newPassword1")
-    }
-    if (!newPassword2) {
-      validationError = "You must type the new password twice"
-      errorFields.push("newPassword2")
-    }
-    if (newPassword1.length < 6) {
-      validationError = "The new password must be at least 6 charaters long"
-      errorFields.push("newPassword1")
-    }
-    if (newPassword1.length > 72) {
-      validationError = "The new password can be at most 72 charaters long"
-      errorFields.push("newPassword1")
-    }
-    if (newPassword1 != newPassword2) {
-      validationError = "The passwords don't match"
-      errorFields.push("newPassword1")
-      errorFields.push("newPassword2")
-    }
-    if (!currentPassword && !isRecoverySession) {
-      validationError =
-        "You must include your current password. If you forgot it, sign out then use 'forgot password' on the sign in page."
-      errorFields.push("currentPassword")
-    }
-    if (validationError) {
-      return fail(400, {
-        errorMessage: validationError,
-        errorFields: [...new Set(errorFields)], // unique values
-        newPassword1,
-        newPassword2,
-        currentPassword,
-      })
+    if (!form.valid) {
+      return fail(400, { form })
     }
 
     // Check current password is correct before updating, but only if they didn't log in with "recover" link
@@ -149,7 +106,7 @@ export const actions = {
     if (!isRecoverySession) {
       const { error } = await supabase.auth.signInWithPassword({
         email: session?.user.email || "",
-        password: currentPassword,
+        password: form.data.currentPassword,
       })
       if (error) {
         // The user was logged out because of bad password. Redirect to error page explaining.
@@ -158,21 +115,18 @@ export const actions = {
     }
 
     const { error } = await supabase.auth.updateUser({
-      password: newPassword1,
+      password: form.data.newPassword1,
     })
     if (error) {
-      return fail(500, {
-        errorMessage: "Unknown error. If this persists please contact us.",
-        newPassword1,
-        newPassword2,
-        currentPassword,
-      })
+      return setError(
+        form,
+        "Unknown error. If this persists please contact us.",
+        { status: 500 },
+      )
     }
 
     return {
-      newPassword1,
-      newPassword2,
-      currentPassword,
+      form,
     }
   },
   deleteAccount: async ({
@@ -184,22 +138,16 @@ export const actions = {
       redirect(303, "/login")
     }
 
-    const formData = await request.formData()
-    const currentPassword = formData.get("currentPassword") as string
+    const form = await superValidate(request, zod(deleteAccountSchema))
 
-    if (!currentPassword) {
-      return fail(400, {
-        errorMessage:
-          "You must provide your current password to delete your account. If you forgot it, sign out then use 'forgot password' on the sign in page.",
-        errorFields: ["currentPassword"],
-        currentPassword,
-      })
+    if (!form.valid) {
+      return fail(400, { form })
     }
 
     // Check current password is correct before deleting account
     const { error: pwError } = await supabase.auth.signInWithPassword({
       email: session?.user.email || "",
-      password: currentPassword,
+      password: form.data.currentPassword,
     })
     if (pwError) {
       // The user was logged out because of bad password. Redirect to error page explaining.
@@ -211,10 +159,13 @@ export const actions = {
       true,
     )
     if (error) {
-      return fail(500, {
-        errorMessage: "Unknown error. If this persists please contact us.",
-        currentPassword,
-      })
+      return setError(
+        form,
+        "Unknown error. If this persists please contact us.",
+        {
+          status: 500,
+        },
+      )
     }
 
     await supabase.auth.signOut()
@@ -226,45 +177,10 @@ export const actions = {
       redirect(303, "/login")
     }
 
-    const formData = await request.formData()
-    const fullName = formData.get("fullName") as string
-    const companyName = formData.get("companyName") as string
-    const website = formData.get("website") as string
+    const form = await superValidate(request, zod(profileSchema))
 
-    let validationError
-    const fieldMaxTextLength = 50
-    const errorFields = []
-    if (!fullName) {
-      validationError = "Name is required"
-      errorFields.push("fullName")
-    } else if (fullName.length > fieldMaxTextLength) {
-      validationError = `Name must be less than ${fieldMaxTextLength} characters`
-      errorFields.push("fullName")
-    }
-    if (!companyName) {
-      validationError =
-        "Company name is required. If this is a hobby project or personal app, please put your name."
-      errorFields.push("companyName")
-    } else if (companyName.length > fieldMaxTextLength) {
-      validationError = `Company name must be less than ${fieldMaxTextLength} characters`
-      errorFields.push("companyName")
-    }
-    if (!website) {
-      validationError =
-        "Company website is required. An app store URL is a good alternative if you don't have a website."
-      errorFields.push("website")
-    } else if (website.length > fieldMaxTextLength) {
-      validationError = `Company website must be less than ${fieldMaxTextLength} characters`
-      errorFields.push("website")
-    }
-    if (validationError) {
-      return fail(400, {
-        errorMessage: validationError,
-        errorFields,
-        fullName,
-        companyName,
-        website,
-      })
+    if (!form.valid) {
+      return fail(400, { form })
     }
 
     // To check if created or updated, check if priorProfile exists
@@ -277,22 +193,20 @@ export const actions = {
     const { error } = await supabase
       .from("profiles")
       .upsert({
+        ...form.data,
         id: session?.user.id,
-        full_name: fullName,
-        company_name: companyName,
-        website: website,
-        updated_at: new Date(),
         unsubscribed: priorProfile?.unsubscribed ?? false,
       })
       .select()
 
     if (error) {
-      return fail(500, {
-        errorMessage: "Unknown error. If this persists please contact us.",
-        fullName,
-        companyName,
-        website,
-      })
+      return setError(
+        form,
+        "Unknown error. If this persists please contact us.",
+        {
+          status: 500,
+        },
+      )
     }
 
     // If the profile was just created, send an email to the user and admin
@@ -301,7 +215,7 @@ export const actions = {
     if (newProfile) {
       await sendAdminEmail({
         subject: "Profile Created",
-        body: `Profile created by ${session.user.email}\nFull name: ${fullName}\nCompany name: ${companyName}\nWebsite: ${website}`,
+        body: `Profile created by ${session.user.email}\nFull name: ${form.data.full_name}\nCompany name: ${form.data.company_name}\nWebsite: ${form.data.website}`,
       })
 
       // Send welcome email
@@ -317,9 +231,7 @@ export const actions = {
     }
 
     return {
-      fullName,
-      companyName,
-      website,
+      form,
     }
   },
   signout: async ({ locals: { supabase, safeGetSession } }) => {

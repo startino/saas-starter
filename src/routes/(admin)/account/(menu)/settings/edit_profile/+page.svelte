@@ -1,5 +1,6 @@
 <script lang="ts">
   import SettingsModule from "../settings_module.svelte"
+  import { profileSchema } from "$lib/schemas"
 
   let { data } = $props()
 
@@ -13,20 +14,22 @@
 <h1 class="text-2xl font-bold mb-6">Settings</h1>
 
 <SettingsModule
+  data={data.form}
+  schema={profileSchema}
   editable={true}
   title="Edit Profile"
   successTitle="Saved Profile"
   formTarget="/account/api?/updateProfile"
   fields={[
     {
-      id: "fullName",
+      id: "full_name",
       label: "Name",
       initialValue: profile?.full_name ?? "",
       placeholder: "Your full name",
       maxlength: 50,
     },
     {
-      id: "companyName",
+      id: "company_name",
       label: "Company Name",
       initialValue: profile?.company_name ?? "",
       maxlength: 50,

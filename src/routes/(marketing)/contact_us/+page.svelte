@@ -1,71 +1,27 @@
 <script lang="ts">
-  import { enhance, applyAction } from "$app/forms"
-  import type { SubmitFunction } from "@sveltejs/kit"
+  import { superForm } from "sveltekit-superforms"
+  import { zodClient } from "sveltekit-superforms/adapters"
 
   import { Input } from "$lib/components/ui/input"
   import { Textarea } from "$lib/components/ui/textarea"
   import { Button } from "$lib/components/ui/button"
   import * as Card from "$lib/components/ui/card"
+  import * as Form from "$lib/components/ui/form"
+  import { contactSchema } from "$lib/schemas"
 
-  let errors = $state<{ [fieldName: string]: string }>({})
-  let loading = $state(false)
-  let showSuccess = $state(false)
+  let { data } = $props()
 
-  const formFields = [
-    {
-      id: "first_name",
-      label: "First Name *",
-      inputType: "text",
-      autocomplete: "given-name",
-    },
-    {
-      id: "last_name",
-      label: "Last Name *",
-      inputType: "text",
-      autocomplete: "family-name",
-    },
-    {
-      id: "email",
-      label: "Email *",
-      inputType: "email",
-      autocomplete: "email",
-    },
-    {
-      id: "phone",
-      label: "Phone Number",
-      inputType: "tel",
-      autocomplete: "tel",
-    },
-    {
-      id: "company",
-      label: "Company Name",
-      inputType: "text",
-      autocomplete: "organization",
-    },
-    {
-      id: "message",
-      label: "Message",
-      inputType: "textarea",
-      autocomplete: "off",
-    },
-  ]
-
-  const handleSubmit: SubmitFunction = () => {
-    loading = true
-    errors = {}
-    return async ({ update, result }) => {
-      await update({ reset: false })
-      await applyAction(result)
-      loading = false
-      if (result.type === "success") {
+  const form = superForm(data.form, {
+    validators: zodClient(contactSchema),
+    onUpdated: ({ form: f }) => {
+      if (f.valid) {
         showSuccess = true
-      } else if (result.type === "failure") {
-        errors = result.data?.errors ?? {}
-      } else if (result.type === "error") {
-        errors = { _: "An error occurred. Please check inputs and try again." }
       }
-    }
-  }
+    },
+  })
+
+  const { form: formData, enhance, errors, delayed } = form
+  let showSuccess = $state(false)
 </script>
 
 <div
@@ -110,47 +66,87 @@
             class="flex flex-col"
             method="POST"
             action="?/submitContactUs"
-            use:enhance={handleSubmit}
+            use:enhance
           >
-            {#each formFields as field}
-              <label for={field.id}>
-                <div class="flex flex-row">
-                  <div class="text-base font-bold">{field.label}</div>
-                  {#if errors[field.id]}
-                    <div
-                      class="text-destructive flex-grow text-sm ml-2 text-right"
-                    >
-                      {errors[field.id]}
-                    </div>
-                  {/if}
-                </div>
-                {#if field.inputType === "textarea"}
-                  <Textarea
-                    id={field.id}
-                    name={field.id}
-                    autocomplete={field.autocomplete}
-                    class="{errors[field.id] ? 'border-destructive' : ''} my-2"
-                    rows={4}
-                  ></Textarea>
-                {:else}
-                  <Input
-                    id={field.id}
-                    name={field.id}
-                    type={field.inputType}
-                    autocomplete={field.autocomplete}
-                    class="{errors[field.id] ? 'border-destructive' : ''} my-2"
-                  />
-                {/if}
-              </label>
-            {/each}
+            <Form.Field {form} name="first_name">
+              <Form.Control let:attrs>
+                <Form.Label>First Name *</Form.Label>
+                <Input
+                  {...attrs}
+                  bind:value={$formData.first_name}
+                  autocomplete="given-name"
+                />
+                <Form.FieldErrors />
+              </Form.Control>
+            </Form.Field>
 
-            {#if Object.keys(errors).length > 0}
+            <Form.Field {form} name="last_name">
+              <Form.Control let:attrs>
+                <Form.Label>Last Name *</Form.Label>
+                <Input
+                  {...attrs}
+                  bind:value={$formData.last_name}
+                  autocomplete="family-name"
+                />
+                <Form.FieldErrors />
+              </Form.Control>
+            </Form.Field>
+
+            <Form.Field {form} name="email">
+              <Form.Control let:attrs>
+                <Form.Label>Email *</Form.Label>
+                <Input
+                  {...attrs}
+                  bind:value={$formData.email}
+                  autocomplete="email"
+                />
+                <Form.FieldErrors />
+              </Form.Control>
+            </Form.Field>
+
+            <Form.Field {form} name="phone">
+              <Form.Control let:attrs>
+                <Form.Label>Phone</Form.Label>
+                <Input
+                  {...attrs}
+                  bind:value={$formData.phone}
+                  inputmode="tel"
+                  autocomplete="tel"
+                />
+                <Form.FieldErrors />
+              </Form.Control>
+            </Form.Field>
+
+            <Form.Field {form} name="company_name">
+              <Form.Control let:attrs>
+                <Form.Label>Company</Form.Label>
+                <Input
+                  {...attrs}
+                  bind:value={$formData.company_name}
+                  autocomplete="organization"
+                />
+                <Form.FieldErrors />
+              </Form.Control>
+            </Form.Field>
+
+            <Form.Field {form} name="message_body">
+              <Form.Control let:attrs>
+                <Form.Label>Message</Form.Label>
+                <Textarea
+                  {...attrs}
+                  bind:value={$formData.message_body as string}
+                />
+                <Form.FieldErrors />
+              </Form.Control>
+            </Form.Field>
+
+            {#if $errors._errors}
               <p class="text-destructive text-sm mb-2">
-                Please resolve above issues.
+                {$errors._errors[0]}
               </p>
             {/if}
-            <Button disabled={loading} type="submit">
-              {loading ? "Submitting" : "Submit"}
+            <Button disabled={$delayed} type="submit">
+              {$delayed ? "Submitting" : "Submit"}
             </Button>
           </form>
         </Card.Content>

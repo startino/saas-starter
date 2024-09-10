@@ -1,31 +1,19 @@
 <script lang="ts">
-  import { enhance, applyAction } from "$app/forms"
-  import type { SubmitFunction } from "@sveltejs/kit"
+  import { zodClient } from "sveltekit-superforms/adapters"
+  import { superForm } from "sveltekit-superforms"
+
   import { Input } from "$lib/components/ui/input"
   import { Button } from "$lib/components/ui/button"
+  import * as Form from "$lib/components/ui/form"
+  import { profileSchema } from "$lib/schemas"
 
-  let { data, form } = $props()
+  let { data } = $props()
 
-  let { session, profile } = data
+  let { session } = data
 
-  let loading = $state(false)
-  let fullName = profile?.full_name ?? ""
-  let companyName = profile?.company_name ?? ""
-  let website = profile?.website ?? ""
+  const form = superForm(data.form, { validators: zodClient(profileSchema) })
 
-  const fieldError = (liveForm: FormAccountUpdateResult, name: string) => {
-    let errors = liveForm?.errorFields ?? []
-    return errors.includes(name)
-  }
-
-  const handleSubmit: SubmitFunction = () => {
-    loading = true
-    return async ({ update, result }) => {
-      await update({ reset: false })
-      await applyAction(result)
-      loading = false
-    }
-  }
+  const { enhance, form: formData, delayed, errors } = form
 </script>
 
 <svelte:head>
@@ -39,67 +27,43 @@
     <div>
       <h1 class="text-2xl font-bold mb-6">Create Profile</h1>
       <form
-        class="form-widget"
+        class="grid gap-4"
         method="POST"
         action="/account/api?/updateProfile"
-        use:enhance={handleSubmit}
+        use:enhance
       >
-        <div class="mt-4">
-          <label for="fullName">
-            <span class="text-center">Your Name</span>
-          </label>
-          <Input
-            id="fullName"
-            name="fullName"
-            type="text"
-            placeholder="Your full name"
-            class="{fieldError(form, 'fullName')
-              ? 'border-destructive'
-              : ''} mt-1 w-full max-w-xs"
-            value={form?.fullName ?? fullName}
-          />
-        </div>
+        <Form.Field {form} name="full_name">
+          <Form.Control let:attrs>
+            <Form.Label>Your Name</Form.Label>
+            <Input {...attrs} bind:value={$formData.full_name} />
+            <Form.FieldErrors />
+          </Form.Control>
+        </Form.Field>
 
-        <div class="mt-4">
-          <label for="companyName">
-            <span class="text-center">Company Name</span>
-          </label>
-          <Input
-            id="companyName"
-            name="companyName"
-            type="text"
-            placeholder="Company name"
-            class="{fieldError(form, 'companyName')
-              ? 'border-destructive'
-              : ''} mt-1 w-full max-w-xs"
-            value={form?.companyName ?? companyName}
-          />
-        </div>
+        <Form.Field {form} name="company_name">
+          <Form.Control let:attrs>
+            <Form.Label>Company Name</Form.Label>
+            <Input {...attrs} bind:value={$formData.company_name} />
+            <Form.FieldErrors />
+          </Form.Control>
+        </Form.Field>
 
-        <div class="mt-4">
-          <label for="website">
-            <span class="text-center">Company Website</span>
-          </label>
-          <Input
-            id="website"
-            name="website"
-            type="text"
-            placeholder="Company website"
-            class="{fieldError(form, 'website')
-              ? 'border-destructive'
-              : ''} mt-1 w-full max-w-xs"
-            value={form?.website ?? website}
-          />
-        </div>
+        <Form.Field {form} name="website">
+          <Form.Control let:attrs>
+            <Form.Label>Company Website</Form.Label>
+            <Input {...attrs} bind:value={$formData.website} />
+            <Form.FieldErrors />
+          </Form.Control>
+        </Form.Field>
 
-        {#if form?.errorMessage}
+        {#if $errors._errors}
           <p class="text-destructive text-sm font-bold text-center mt-3">
-            {form?.errorMessage}
+            {$errors._errors[0]}
           </p>
         {/if}
         <div class="mt-4">
-          <Button type="submit" class="mt-3" disabled={loading}>
-            {#if loading}
+          <Button type="submit" class="mt-3" disabled={$delayed}>
+            {#if $delayed}
               ...
             {:else}
               Create Profile

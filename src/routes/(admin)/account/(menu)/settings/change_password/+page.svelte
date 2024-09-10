@@ -5,6 +5,7 @@
   import * as Card from "$lib/components/ui/card"
   import * as Alert from "$lib/components/ui/alert"
   import { buttonVariants } from "$lib/components/ui/button"
+  import { passwordSchema } from "$lib/schemas"
 
   let { data } = $props()
   let { session, supabase } = data
@@ -50,6 +51,8 @@
 
 {#if hasPassword}
   <SettingsModule
+    data={data.form}
+    schema={passwordSchema}
     title="Change Password"
     editable={true}
     saveButtonTitle="Change Password"
@@ -102,13 +105,15 @@
           onclick={sendForgotPassword}
           >Send Set Password Email
         </button>
-        <Alert.Root>
-          <Check class="h-4 w-4 {sentEmail ? '' : 'hidden'}" />
-          <Alert.Description>
-            Sent email! Please check your inbox and use the link to set your
-            password.
-          </Alert.Description>
-        </Alert.Root>
+        {#if sentEmail}
+          <Alert.Root>
+            <Check class="h-4 w-4 " />
+            <Alert.Description>
+              Sent email! Please check your inbox and use the link to set your
+              password.
+            </Alert.Description>
+          </Alert.Root>
+        {/if}
       </div>
     </Card.Content>
   </Card.Root>
