@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { emailSchema } from "$lib/schemas"
   import SettingsModule from "../settings_module.svelte"
 
   let { data } = $props()
@@ -13,6 +14,8 @@
 <h1 class="text-2xl font-bold mb-6">Settings</h1>
 
 <SettingsModule
+  data={data.form}
+  schema={emailSchema}
   title="Change Email"
   editable={true}
   successTitle="Email change initiated"

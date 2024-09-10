@@ -1,11 +1,24 @@
 <script lang="ts">
-  import { enhance, applyAction } from "$app/forms"
   import { page } from "$app/stores"
-  import type { SubmitFunction } from "@sveltejs/kit"
+  import {
+    type SuperValidated,
+    type Infer,
+    superForm,
+  } from "sveltekit-superforms"
+  import { zodClient } from "sveltekit-superforms/adapters"
+
   import * as Card from "$lib/components/ui/card"
+  import * as Form from "$lib/components/ui/form"
   import { Button, buttonVariants } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
   import * as Alert from "$lib/components/ui/alert"
+  import {
+    type EmailSchema,
+    type DeleteAccountSchema,
+    type PasswordSchema,
+    type ProfileSchema,
+  } from "$lib/schemas"
+  import { enhance } from "$app/forms"
 
   const fieldError = (liveForm: FormAccountUpdateResult, name: string) => {
     let errors = liveForm?.errorFields ?? []
@@ -13,7 +26,6 @@
   }
 
   // Page state
-  let loading = $state(false)
   let showSuccess = $state(false)
 
   type Field = {
@@ -26,6 +38,10 @@
   }
 
   type Props = {
+    data?: SuperValidated<
+      Infer<EmailSchema | DeleteAccountSchema | PasswordSchema | ProfileSchema>
+    >
+    schema?: EmailSchema | DeleteAccountSchema | PasswordSchema | ProfileSchema
     editable?: boolean
     dangerous?: boolean
     title?: string
@@ -40,6 +56,8 @@
   }
 
   let {
+    data,
+    schema,
     editable = false,
     dangerous = false,
     title = "",
@@ -53,17 +71,22 @@
     saveButtonTitle = "Save",
   }: Props = $props()
 
-  const handleSubmit: SubmitFunction = () => {
-    loading = true
-    return async ({ update, result }) => {
-      await update({ reset: false })
-      await applyAction(result)
-      loading = false
-      if (result.type === "success") {
-        showSuccess = true
-      }
-    }
-  }
+  const form =
+    data && schema
+      ? superForm(data, {
+          validators: zodClient(schema),
+          onUpdated: ({ form: f }) => {
+            if (f.valid) {
+              showSuccess = true
+            }
+          },
+        })
+      : null
+
+  const formData = form?.form
+  const delayed = form?.delayed
+  const errors = form?.errors
+  const superEnhance = form?.enhance ?? enhance
 </script>
 
 <Card.Root class="p-6 pb-7 mt-8 max-w-xl flex flex-col md:flex-row shadow">
@@ -97,43 +120,50 @@
             <span>{message}</span>
           </Alert.Root>
         {/if}
-        <form
-          class="form-widget flex flex-col"
-          method="POST"
-          action={formTarget}
-          use:enhance={handleSubmit}
-        >
-          {#each fields as field}
-            {#if field.label}
-              <label for={field.id}>
-                <span class="text-sm text-muted-foreground">{field.label}</span>
-              </label>
-            {/if}
-            {#if editable}
-              <Input
-                id={field.id}
-                name={field.id}
-                type={field.inputType ?? "text"}
-                disabled={!editable}
-                placeholder={field.placeholder ?? field.label ?? ""}
-                class="{fieldError($page?.form, field.id)
-                  ? 'border-destructive'
-                  : ''} w-full max-w-xs mb-3 py-4"
-                value={$page.form ? $page.form[field.id] : field.initialValue}
-                maxlength={field.maxlength ? field.maxlength : null}
-              />
-            {:else}
-              <div class="text-lg mb-3">{field.initialValue}</div>
-            {/if}
-          {/each}
+        {#if editable}
+          <form
+            class="form-widget flex flex-col"
+            method="POST"
+            action={formTarget}
+            use:superEnhance
+          >
+            {#if form && $errors && $formData}
+              {#each fields as field}
+                <Form.Field {form} name={field.id}>
+                  <Form.Control let:attrs>
+                    {#if field.label}
+                      <Form.Label>{field.label}</Form.Label>
+                    {/if}
+                    {#if editable}
+                      <Input
+                        {...attrs}
+                        id={field.id}
+                        name={field.id}
+                        type={field.inputType ?? "text"}
+                        disabled={!editable}
+                        placeholder={field.placeholder ?? field.label ?? ""}
+                        class="{fieldError($page?.form, field.id)
+                          ? 'border-destructive'
+                          : ''} w-full max-w-xs mb-3 py-4"
+                        value={$formData[field.id as keyof typeof $formData]}
+                        maxlength={field.maxlength ? field.maxlength : null}
+                      />
 
-          {#if $page?.form?.errorMessage}
-            <p class="text-destructive text-sm font-bold mt-1">
-              {$page?.form?.errorMessage}
-            </p>
-          {/if}
+                      <Form.FieldErrors />
+                    {:else}
+                      <div class="text-lg mb-3">{field.initialValue}</div>
+                    {/if}
+                  </Form.Control>
+                </Form.Field>
+              {/each}
 
-          {#if editable}
+              {#if $errors._errors}
+                <p class="text-destructive text-sm font-bold mt-1">
+                  {$errors._errors[0]}
+                </p>
+              {/if}
+            {/if}
+
             <div>
               <Button
                 type="submit"
@@ -141,9 +171,9 @@
                 class="ml-auto mt-3 min-w-[145px] {dangerous
                   ? 'border-destructive'
                   : ''}"
-                disabled={loading}
+                disabled={$delayed}
               >
-                {#if loading}
+                {#if $delayed}
                   <span
                     class="loading loading-spinner loading-md align-middle mx-3"
                   ></span>
@@ -152,17 +182,23 @@
                 {/if}
               </Button>
             </div>
-          {:else}
-            <!-- !editable -->
-            <a href={editLink} class="mt-1">
-              <Button
-                class="{dangerous ? 'border-destructive' : ''} min-w-[145px]"
-              >
-                {editButtonTitle}
-              </Button>
-            </a>
-          {/if}
-        </form>
+          </form>
+        {:else}
+          {#each fields as field}
+            <div class="mb-4">
+              <h4 class="font-bold mb-2">{field.label}</h4>
+              <p>{field.initialValue}</p>
+            </div>
+          {/each}
+
+          <a href={editLink} class="mt-1">
+            <Button
+              class="{dangerous ? 'border-destructive' : ''} min-w-[145px]"
+            >
+              {editButtonTitle}
+            </Button>
+          </a>
+        {/if}
       {:else}
         <!-- showSuccess -->
         <div>

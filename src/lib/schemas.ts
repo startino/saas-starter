@@ -1,5 +1,46 @@
 import { z } from "zod"
 
+export const emailSchema = z.object({
+  email: z.string().email(),
+})
+
+export type EmailSchema = typeof emailSchema
+
+export const passwordSchema = z
+  .object({
+    currentPassword: z
+      .string()
+      .min(
+        1,
+        "You must include your current password. If you forgot it, sign out then use 'forgot password' on the sign in page.",
+      ),
+    newPassword1: z
+      .string()
+      .min(6, "The new password must be at least 6 charaters long")
+      .max(72, "The new password can be at most 72 charaters long"),
+    newPassword2: z
+      .string()
+      .min(6, "The new password must be at least 6 charaters long")
+      .max(72, "The new password can be at most 72 charaters long"),
+  })
+  .refine(
+    ({ newPassword1, newPassword2 }) => newPassword1 === newPassword2,
+    "The passwords don't match",
+  )
+
+export type PasswordSchema = typeof passwordSchema
+
+export const deleteAccountSchema = z.object({
+  currentPassword: z
+    .string()
+    .min(
+      1,
+      "You must provide your current password to delete your account. If you forgot it, sign out then use 'forgot password' on the sign in page.",
+    ),
+})
+
+export type DeleteAccountSchema = typeof deleteAccountSchema
+
 export const contactSchema = z.object({
   first_name: z
     .string()
@@ -38,3 +79,5 @@ export const profileSchema = z.object({
     )
     .max(50, "Name must be less than 50 characters"),
 })
+
+export type ProfileSchema = typeof profileSchema
