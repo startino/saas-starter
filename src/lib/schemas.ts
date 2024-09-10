@@ -17,3 +17,24 @@ export const contactSchema = z.object({
     .max(2000, "Message too long. Must be no more than 2000 character")
     .default(""),
 })
+
+export const profileSchema = z.object({
+  full_name: z
+    .string()
+    .min(1, "Name is required")
+    .max(50, "Name must be less than 50 characters"),
+  company_name: z
+    .string()
+    .min(
+      1,
+      "Company name is required. If this is a hobby project or personal app, please put your name.",
+    )
+    .max(50, "Company name must be less than 50 characters"),
+  website: z
+    .string()
+    .min(
+      1,
+      "Company website is required. An app store URL is a good alternative if you don't have a website.",
+    )
+    .max(50, "Name must be less than 50 characters"),
+})

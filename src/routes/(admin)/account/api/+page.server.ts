@@ -1,5 +1,8 @@
 import { fail, redirect } from "@sveltejs/kit"
 import { sendAdminEmail, sendUserEmail } from "$lib/mailer"
+import { zod } from "sveltekit-superforms/adapters"
+import { setError, superValidate } from "sveltekit-superforms"
+import { profileSchema } from "$lib/schemas"
 
 export const actions = {
   toggleEmailSubscription: async ({ locals: { supabase, safeGetSession } }) => {
@@ -226,45 +229,10 @@ export const actions = {
       redirect(303, "/login")
     }
 
-    const formData = await request.formData()
-    const fullName = formData.get("fullName") as string
-    const companyName = formData.get("companyName") as string
-    const website = formData.get("website") as string
+    const form = await superValidate(request, zod(profileSchema))
 
-    let validationError
-    const fieldMaxTextLength = 50
-    const errorFields = []
-    if (!fullName) {
-      validationError = "Name is required"
-      errorFields.push("fullName")
-    } else if (fullName.length > fieldMaxTextLength) {
-      validationError = `Name must be less than ${fieldMaxTextLength} characters`
-      errorFields.push("fullName")
-    }
-    if (!companyName) {
-      validationError =
-        "Company name is required. If this is a hobby project or personal app, please put your name."
-      errorFields.push("companyName")
-    } else if (companyName.length > fieldMaxTextLength) {
-      validationError = `Company name must be less than ${fieldMaxTextLength} characters`
-      errorFields.push("companyName")
-    }
-    if (!website) {
-      validationError =
-        "Company website is required. An app store URL is a good alternative if you don't have a website."
-      errorFields.push("website")
-    } else if (website.length > fieldMaxTextLength) {
-      validationError = `Company website must be less than ${fieldMaxTextLength} characters`
-      errorFields.push("website")
-    }
-    if (validationError) {
-      return fail(400, {
-        errorMessage: validationError,
-        errorFields,
-        fullName,
-        companyName,
-        website,
-      })
+    if (!form.valid) {
+      return fail(400, { form })
     }
 
     // To check if created or updated, check if priorProfile exists
@@ -277,21 +245,20 @@ export const actions = {
     const { error } = await supabase
       .from("profiles")
       .upsert({
+        ...form.data,
         id: session?.user.id,
-        full_name: fullName,
-        company_name: companyName,
-        website: website,
         unsubscribed: priorProfile?.unsubscribed ?? false,
       })
       .select()
 
     if (error) {
-      return fail(500, {
-        errorMessage: "Unknown error. If this persists please contact us.",
-        fullName,
-        companyName,
-        website,
-      })
+      return setError(
+        form,
+        "Unknown error. If this persists please contact us.",
+        {
+          status: 500,
+        },
+      )
     }
 
     // If the profile was just created, send an email to the user and admin
@@ -300,7 +267,7 @@ export const actions = {
     if (newProfile) {
       await sendAdminEmail({
         subject: "Profile Created",
-        body: `Profile created by ${session.user.email}\nFull name: ${fullName}\nCompany name: ${companyName}\nWebsite: ${website}`,
+        body: `Profile created by ${session.user.email}\nFull name: ${form.data.full_name}\nCompany name: ${form.data.company_name}\nWebsite: ${form.data.website}`,
       })
 
       // Send welcome email
@@ -316,9 +283,7 @@ export const actions = {
     }
 
     return {
-      fullName,
-      companyName,
-      website,
+      form,
     }
   },
   signout: async ({ locals: { supabase, safeGetSession } }) => {
