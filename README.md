@@ -9,7 +9,7 @@
 - [Fully Functional Demo](https://saasstarter.work)
 - [Quick Start](#quick-start): Full docs from `git clone` to deployment.
 
-We used the [CMSaasStarter](https://github.com/CriticalMoments/CMSaasStarter) as the groundwork.
+This project used the amazing [CMSaasStarter](https://github.com/CriticalMoments/CMSaasStarter) as the groundwork for this template.
 
 ## Features
 
