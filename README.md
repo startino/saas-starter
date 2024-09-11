@@ -1,14 +1,12 @@
-<p align="center">
-    <picture>
-        <img width="420" alt="SaaS Starter Header reading: The open source, fast, and free to host SaaS template" src="https://github.com/startino/saas-starter/blob/alpha/src/static/banner.png">
-    </picture>
-    
+<div align="center">
+    <img width="720" alt="SaaS Starter Header reading: The open source, fast, and free to host SaaS template" src="https://github.com/startino/saas-starter/blob/assets/banner.png">
+
 [![GitHub Repo stars](https://img.shields.io/github/stars/startino/saas-starter)](https://github.com/startino/saas-starter)
 
 
   <a href="https://saasstarter.work"><strong>Demo & Homepage (CMSaasStarter's for now)</strong></a> •
   <a href="https://github.com/startino/saas-starter#quick-start"><strong>Quick Start Guide</strong></a> • 
-</p>
+</div>
 
 <br/>
 
@@ -96,7 +94,7 @@ The selected tech stack creates lightning fast websites.
 
 The result is a perfect Google PageSpeed Insights score in all categories!
 
-<img width="420" alt="Screenshot 2024-01-18 at 11 31 32 AM" src="https://github.com/startino/saas-starter/assets/848343/46b5e960-2aa0-4fb5-acd7-4f84b380e1d0">
+<img width="420" alt="Screenshot 2024-01-18 at 11 31 32 AM" src="https://github.com/startino/saas-starter/blob/assets/lighthouse-report.png" />
 
 # Quick Start
 
