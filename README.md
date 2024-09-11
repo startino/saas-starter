@@ -1,3 +1,24 @@
+<p align="center">
+    <picture>
+        <img width="420" alt="SaaS Starter Header reading: The open source, fast, and free to host SaaS template" src="https://github.com/startino/saas-starter/src/static/banner.png">
+    </picture>
+</p>
+
+<p align="center">
+  <a href="https://github.com/startino/saas-starter/actions/workflows/build.yml" target="_blank"><img src="https://github.com/startino/saas-starter/actions/workflows/build.yml/badge.svg?branch=main" alt="Built Status"></a>
+  <a href="https://github.com/startino/saas-starter/actions/workflows/format.yml" target="_blank"><img src="https://github.com/startino/saas-starter/actions/workflows/format.yml/badge.svg?branch=main" alt="Format Check"></a>
+  <a href="https://github.com/startino/saas-starter/actions/workflows/linting.yml" target="_blank"><img src="https://github.com/startino/saas-starter/actions/workflows/linting.yml/badge.svg?branch=main" alt="Linting"></a>
+  <a href="https://github.com/startino/saas-starter/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-MIT-brightgreen?labelColor=32383f" alt="License"></a>
+</p>
+
+<p align="center">
+  <a href="https://saasstarter.work"><strong>Demo & Homepage</strong></a> •
+  <a href="https://github.com/startino/saas-starter#quick-start"><strong>Quick Start Guide</strong></a> • 
+  <a href="https://github.com/startino/saas-starter/issues"><strong>Issues</strong></a>
+</p>
+
+<br/>
+
 # SaaS Starter: A SvelteKit Boilerplate/Template
 
 - [Feature Rich](#features): user auth, user dashboard, marketing site, blog engine, billing/subscriptions, pricing page, search, emails, and more.
@@ -5,11 +26,11 @@
 - [Delighful Developer Experience](#tech-stack): tools you'll love working with, including SvelteKit, Tailwind, Shadcn-svelte, Superforms, Postgres, and Supabase.
 - Extensible: all the tools you need to make additional marketing pages, UI components, user dashboards, admin portals, database backends, API endpoints, and more.
 - [Hosting](#suggested-hosting-stack): Our suggested hosting stack is free to host, cheap to scale, easy to manage, and includes automatic deployments.
-- [MIT Open Source](https://github.com/CriticalMoments/CMSaasStarter/blob/main/LICENSE)
+- [MIT Open Source](https://github.com/startino/saas-starter/blob/main/LICENSE)
 - [Fully Functional Demo](https://saasstarter.work)
 - [Quick Start](#quick-start): Full docs from `git clone` to deployment.
 
-This project used the amazing [CMSaasStarter](https://github.com/CriticalMoments/CMSaasStarter) as the groundwork for this template.
+This project used the amazing [CMSaasStarter](https://github.com/startino/saas-starter) as the groundwork for this template.
 
 ## Features
 
@@ -82,7 +103,7 @@ The selected tech stack creates lightning fast websites.
 
 The result is a perfect Google PageSpeed Insights score in all categories!
 
-<img width="420" alt="Screenshot 2024-01-18 at 11 31 32 AM" src="https://github.com/CriticalMoments/CMSaasStarter/assets/848343/46b5e960-2aa0-4fb5-acd7-4f84b380e1d0">
+<img width="420" alt="Screenshot 2024-01-18 at 11 31 32 AM" src="https://github.com/startino/saas-starter/assets/848343/46b5e960-2aa0-4fb5-acd7-4f84b380e1d0">
 
 # Quick Start
 
