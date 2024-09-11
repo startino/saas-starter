@@ -1,20 +1,13 @@
 <p align="center">
     <picture>
-        <img width="420" alt="SaaS Starter Header reading: The open source, fast, and free to host SaaS template" src="https://github.com/startino/saas-starter/src/static/banner.png">
+        <img width="420" alt="SaaS Starter Header reading: The open source, fast, and free to host SaaS template" src="https://github.com/startino/saas-starter/blob/alpha/src/static/banner.png">
     </picture>
-</p>
+    
+[![GitHub Repo stars](https://img.shields.io/github/stars/startino/saas-starter)](https://github.com/startino/saas-starter)
 
-<p align="center">
-  <a href="https://github.com/startino/saas-starter/actions/workflows/build.yml" target="_blank"><img src="https://github.com/startino/saas-starter/actions/workflows/build.yml/badge.svg?branch=main" alt="Built Status"></a>
-  <a href="https://github.com/startino/saas-starter/actions/workflows/format.yml" target="_blank"><img src="https://github.com/startino/saas-starter/actions/workflows/format.yml/badge.svg?branch=main" alt="Format Check"></a>
-  <a href="https://github.com/startino/saas-starter/actions/workflows/linting.yml" target="_blank"><img src="https://github.com/startino/saas-starter/actions/workflows/linting.yml/badge.svg?branch=main" alt="Linting"></a>
-  <a href="https://github.com/startino/saas-starter/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-MIT-brightgreen?labelColor=32383f" alt="License"></a>
-</p>
 
-<p align="center">
-  <a href="https://saasstarter.work"><strong>Demo & Homepage</strong></a> •
+  <a href="https://saasstarter.work"><strong>Demo & Homepage (CMSaasStarter's for now)</strong></a> •
   <a href="https://github.com/startino/saas-starter#quick-start"><strong>Quick Start Guide</strong></a> • 
-  <a href="https://github.com/startino/saas-starter/issues"><strong>Issues</strong></a>
 </p>
 
 <br/>
