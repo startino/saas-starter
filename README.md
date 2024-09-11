@@ -1,60 +1,15 @@
-<p align="center">
-    <picture>
-        <img width="420" alt="SaaS Starter Header reading: The open source, fast, and free to host SaaS template" src="https://github.com/CriticalMoments/CMSaasStarter/assets/848343/12f47617-e5be-4694-affc-23310e54b885">
-    </picture>
-</p>
-
-<p align="center">
-  <a href="https://github.com/CriticalMoments/CMSaasStarter/actions/workflows/build.yml" target="_blank"><img src="https://github.com/CriticalMoments/CMSaasStarter/actions/workflows/build.yml/badge.svg?branch=main" alt="Built Status"></a>
-  <a href="https://github.com/CriticalMoments/CMSaasStarter/actions/workflows/format.yml" target="_blank"><img src="https://github.com/CriticalMoments/CMSaasStarter/actions/workflows/format.yml/badge.svg?branch=main" alt="Format Check"></a>
-  <a href="https://github.com/CriticalMoments/CMSaasStarter/actions/workflows/linting.yml" target="_blank"><img src="https://github.com/CriticalMoments/CMSaasStarter/actions/workflows/linting.yml/badge.svg?branch=main" alt="Linting"></a>
-  <a href="https://github.com/CriticalMoments/CMSaasStarter/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/badge/License-MIT-brightgreen?labelColor=32383f" alt="License"></a>
-</p>
-
-<p align="center">
-  <a href="https://saasstarter.work"><strong>Demo & Homepage</strong></a> •
-  <a href="https://github.com/CriticalMoments/CMSaasStarter#quick-start"><strong>Quick Start Guide</strong></a> • 
-  <a href="https://github.com/CriticalMoments/CMSaasStarter/issues"><strong>Issues</strong></a>
-</p>
-
-<br/>
-
 # SaaS Starter: A SvelteKit Boilerplate/Template
 
 - [Feature Rich](#features): user auth, user dashboard, marketing site, blog engine, billing/subscriptions, pricing page, search, emails, and more.
 - [Lightning Performance](#performance--best-practices): fast pre-rendered pages which score 100/100 on Google PageSpeed.
-- [Delighful Developer Experience](#tech-stack): tools you'll love working with, including SvelteKit, Tailwind, DaisyUI, Postgres, and Supabase.
+- [Delighful Developer Experience](#tech-stack): tools you'll love working with, including SvelteKit, Tailwind, Shadcn-svelte, Superforms, Postgres, and Supabase.
 - Extensible: all the tools you need to make additional marketing pages, UI components, user dashboards, admin portals, database backends, API endpoints, and more.
 - [Hosting](#suggested-hosting-stack): Our suggested hosting stack is free to host, cheap to scale, easy to manage, and includes automatic deployments.
 - [MIT Open Source](https://github.com/CriticalMoments/CMSaasStarter/blob/main/LICENSE)
 - [Fully Functional Demo](https://saasstarter.work)
 - [Quick Start](#quick-start): Full docs from `git clone` to deployment.
 
-Created by the folks at [Critical Moments](https://criticalmoments.io)! Check out our website site for an example deployment of SaaS Starter.
-
-**Make mobile apps?** Improve conversion rates and ratings with [Critical Moments](https://criticalmoments.io).
-
-## Demo
-
-You can explore all the features using our fully functional demo [saasstarter.work](https://saasstarter.work).
-
-[![Try it Now](https://img.shields.io/badge/Try_it_Now-37a779?style=for-the-badge "Try it Now")](https://saasstarter.work)
-
-See [criticalmoments.io](https://criticalmoments.io) for an example of what’s possible after this template has design, content, and functionality added.
-
-<a href="https://saasstarter.work">
-<kbd>
-<img width="500" alt="homepage" src="https://github.com/CriticalMoments/CMSaasStarter/assets/848343/34944c09-df72-4ac2-9099-01d25d99911b">
-</kbd>
-<br>
-<kbd>
-<img width="200" alt="pricing page" src="https://github.com/CriticalMoments/CMSaasStarter/assets/848343/c3cb2ab7-3739-473e-a1fe-f82a4a31e844">
-</kbd><kbd>
-<img width="200" alt="settings page" src="https://github.com/CriticalMoments/CMSaasStarter/assets/848343/2d947c97-3cc7-4ff5-a5b1-7c8478b6f31a">
-</kbd><kbd>
-<img width="200" alt="payments portal" src="https://github.com/CriticalMoments/CMSaasStarter/assets/848343/0c4749c3-0d29-4edc-ae87-d8a4eefea3c9">
-</kbd>
-</a>
+We used the [CMSaasStarter](https://github.com/CriticalMoments/CMSaasStarter) as the groundwork.
 
 ## Features
 
@@ -75,19 +30,14 @@ Everything you need to get started for a SaaS company:
 - Responsive: designed for mobile and desktop.
 - Extensible: all the tools you need to make additional marketing pages, UI components, admin portals, database backends, API endpoints, and more.
 
-## Introduction Blog Post
-
-What to learn why we picked the technologies we did, and how to keep your fork lightning fast as you add content? Check out [our blog post](https://criticalmoments.io/blog/how_we_built_our_marketing_page) on the process. Yes, it's hosted on a SaaS Starter fork!
-
 ## Tech Stack
 
-- Web Framework: SvelteKit
+- Web Framework: SvelteKit with Svelte 5 support
 - CSS / Styling
   - Framework: TailwindCSS
-  - Component library: DaisyUI
+  - Component library: Shadcn-svelte
 - Suggested Hosting Stack
-  - Host + CDN: Cloudflare Pages
-  - Serverless compute: Cloudflare Workers
+  - Host: Vercel
   - Authentication: Supabase Auth
   - Database: Supabase Postgres
 - Payments
@@ -149,7 +99,7 @@ On your development machine:
 
 ```
 git pull [Your Repo Created Above]
-cd CMSaasStarter ## or your repo name if different
+cd SaasStarter ## or your repo name if different
 npm install
 ## Create an env file. You'll replace the values in this in later steps.
 cp local_env_template .env.local
@@ -158,35 +108,6 @@ npm run dev -- --open
 ```
 
 **Note:** some features won't work until you complete the rest of the setup steps below!
-
-## Developer Tools
-
-The repo includes [CI scripts](https://aws.amazon.com/devops/continuous-integration/) designed for [GitHub Actions](https://github.com/features/actions). These confirm you don’t break your [build](https://github.com/CriticalMoments/CMSaasStarter/blob/main/.github/workflows/build.yml), you use [proper code formatting](https://github.com/CriticalMoments/CMSaasStarter/blob/main/.github/workflows/format.yml), and [code linting and typechecking passes](https://github.com/CriticalMoments/CMSaasStarter/blob/main/.github/workflows/linting.yml). Github disables CI on new repos by default, so be sure to go into the Github Actions page for your repo and enable workflows.
-
-You can manually run these scripts yourself; `npm run build` for the build, `npm run format_check` to check formatting, `npm run lint` for the linting, `npm run check` for typechecking, and `npm run test` for testing (if you add tests).
-
-Installing extensions in your editor can automatically format-on-save, show linting/type issues inline, and run your test cases:
-
-- Svelte for Svelte and accessibility issues: [VSCode](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) or [other editors](https://sveltesociety.dev/tools#editor-support)
-- ESLint for type checking and linting: [VSCode](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [other editors](https://eslint.org/docs/latest/use/integrations)
-- Vitest for testing if you add tests: [VSCode](https://marketplace.visualstudio.com/items?itemName=vitest.explorer) or [other editors](https://vitest.dev/guide/ide)
-
-To catch build, formatting, linting and test issues before you commit changes, we suggest the following local git hook. It will run before you commit, stop you from breaking the build, and show any issues that are found. Add the lines below to an executable git hook script at the location `.git/hooks/pre-commit`.
-
-```
-#!/bin/sh
-set -e
-npm run format_check
-npm run lint
-npm run build
-npm run check
-npm run test_run
-
-# Optional: check for misspelled words. Uncomment line below after installing misspell tool https://github.com/client9/misspell?tab=readme-ov-file#install
-# misspell -error ./src README.md
-```
-
-Finally: if you find build, formatting or linting rules too tedious, you can disable enforcement by deleting the CI files (`.github/workflows/*`) and remove the git hook (`.git/hooks/pre-commit`).
 
 ## Setup Supabase Project
 
@@ -247,37 +168,6 @@ Finally: if you find build, formatting or linting rules too tedious, you can dis
     - Optional: setup a custom domain so Stripe pages use your own domain
 - Repeat steps in production environment
 
-## Deploy
-
-We have two documented options for deploying SaaS Starter: Cloudflare Pages and Vercel. However, it can be hosted anywhere you can host a SvelteKit app.
-
-Our [official demo](https://saasstarter.work) is hosted on Cloudflare Pages, and deployed each time the main branch is updated.
-
-### Deploy To Cloudflare
-
-Cloudflare Pages and Workers is one of the most popular options for deploying SvelteKit and we recommend it. [Follow Cloudflare’s instructions](https://developers.cloudflare.com/pages/framework-guides/deploy-a-svelte-site/#deploy-with-cloudflare-pages) to deploy in a few clicks. Be sure to select “SvelteKit” as framework, and the rest of the defaults will work.
-
-When prompted: add environment variables for your production environment (PUBLIC_SUPABASE_URL,
-PUBLIC_SUPABASE_ANON_KEY, PRIVATE_SUPABASE_SERVICE_ROLE, and PRIVATE_STRIPE_API_KEY).
-
-Optional: enable [Cloudflare Analytics](https://www.cloudflare.com/en-ca/application-services/products/analytics/) for usage metrics.
-
-### Deploy to Vercel
-
-Deploy using Vercel's deploy button:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FCriticalMoments%2FCMSaasStarter&env=PUBLIC_SUPABASE_URL,PUBLIC_SUPABASE_ANON_KEY,PRIVATE_SUPABASE_SERVICE_ROLE,PRIVATE_STRIPE_API_KEY&envDescription=Each%20environment%20variable%20is%20documented%20in%20our%20quick%20start%20guide%3A%20https%3A%2F%2Fgithub.com%2FCriticalMoments%2FCMSaasStarter%3Ftab%3Dreadme-ov-file%23quick-start&envLink=https%3A%2F%2Fgithub.com%2FCriticalMoments%2FCMSaasStarter%3Ftab%3Dreadme-ov-file%23quick-start&demo-title=SaasStarter%20Demo&demo-description=A%20live%20demo%20of%20this%20template%2C%20deployed%20from%20the%20main%20branch.&demo-url=https%3A%2F%2Fsaasstarter.work&demo-image=https%3A%2F%2Fprivate-user-images.githubusercontent.com%2F848343%2F297197975-34944c09-df72-4ac2-9099-01d25d99911b.png%3Fjwt%3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjE0NTAwMzMsIm5iZiI6MTcyMTQ0OTczMywicGF0aCI6Ii84NDgzNDMvMjk3MTk3OTc1LTM0OTQ0YzA5LWRmNzItNGFjMi05MDk5LTAxZDI1ZDk5OTExYi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwNzIwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDcyMFQwNDI4NTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zY2E4ZmY3YjVhMTc3YWE5YmI2MzI3YWE3MWQ2OWIzMjI3MGU2YzhmZDJjNjhlNDJhY2VjMDExMDk5ZjMyM2M4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.O8e9x5qFiij0TILjUncTOXjAs5Di2-8221K-N0YttbE)
-
-Here is a demo of of Saas Starter hosted on Vercel: [vercel.saasstarter.work](https://vercel.saasstarter.work)
-
-### Deploy Alternatives
-
-If you prefer another host you can explore alternatives:
-
-- [SvelteKit official adapters](https://kit.svelte.dev/docs/adapters) including Netlify, Vercel, and Node
-- [Community adapters](https://sveltesociety.dev/components#adapters) including Github pages, AppEngine, Azure, and more
-- [Supabase](https://supabase.com/docs/guides/getting-started/quickstarts/sveltekit) if you want one host for everything. Note: they do charge $10 a month for custom domains, unlike Cloudflare.
-
 ## Setup Emailer -- Optional
 
 SaaS Starter includes email capabilities for sending emails to users and admins.
@@ -288,7 +178,7 @@ These are optional and disabled by default. See [email docs](email_docs.md) for 
 
 After the steps above, you’ll have a working version like the demo page. However, it’s not branded, and doesn’t have your content. The following checklist helps you customize the template to make a SaaS homepage for your company.
 
-- Describe your site with a name, description and base URL in in `src/config.ts:`. These values are used for SEO.
+- Describe your site with a name, description and base URL in in `src/lib/config.ts:`. These values are used for SEO.
 - Content
   - Add actual content for marketing homepage
   - Add actual content for your blog (or delete the blog)
@@ -297,7 +187,7 @@ After the steps above, you’ll have a working version like the demo page. Howev
   - Add any pages you want on top of our boiler plate (about, terms of service, etc). Be sure to add links to them in the header, mobile menu header, and footer as appropriate (`src/routes/(marketing)/+layout.svelte`).
   - Note: if you add any dynamic content to the main marketing page, pricing page or blog, be sure to set `prerender = false` in the appropriate `+page.ts` file. These are currently pre-rendered and served as static assets for performance reasons, but that will break if you add server side rendering requirements.
 - Update SEO content
-  - Update title and meta description tags for every public page. We include generic ones using your site name (`src/config.ts`), but the more specific these are the better.
+  - Update title and meta description tags for every public page. We include generic ones using your site name (`src/lib/config.ts`), but the more specific these are the better.
   - This done automatically for blog posts from `posts.ts` metadata
 - Style
   - Create a new DaisyUI Theme matching your brand or use one of the built in themes from DaisyUI (see `tailwind.config.js`)
@@ -310,20 +200,3 @@ After the steps above, you’ll have a working version like the demo page. Howev
   - Add actual SaaS functionality!
   - Replace the admin dashboard with real content (`/src/routes/(admin)/account/+page.svelte`).
   - Add API endpoints and database tables as needed to deliver your SaaS product.
-
-## Community Extensions
-
-The open source community is extending and improving SaasStarter!
-
-These extensions are reference implementations of commonly needed features. We don't integrate them into the main branch to keep our dependencies minimal and simplify maintenance. However, if you need them you can cherry pick into your fork/repo:
-
-- Internationalization: [branch](https://github.com/CriticalMoments/CMSaasStarter/tree/extension/internationalization), and [instructions](https://github.com/CriticalMoments/CMSaasStarter/pull/49)
-- Dark mode theme: [branch](https://github.com/CriticalMoments/CMSaasStarter/tree/extension/dark_mode), and [instructions](https://github.com/CriticalMoments/CMSaasStarter/pull/47)
-
-### Icons Credits
-
-Homescreen Icons are from [Solar Broken Line Icons](https://www.svgrepo.com/collection/solar-broken-line-icons/) and [Solar Linear Icons](https://www.svgrepo.com/collection/solar-linear-icons) via CC Attribution License.
-
-# Sponsor
-
-We hope you enjoy SaaS Starter! If you build mobile apps, please check out its sponsor/creator, [Critical Moments](https://criticalmoments.io). We can help improve your mobile app conversions, improve your app rating, and mitigate major bugs and outages.
