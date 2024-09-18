@@ -5,12 +5,15 @@
   import { buttonVariants } from "$lib/components/ui/button"
   import * as Dialog from "$lib/components/ui/dialog"
   import { page } from "$app/stores"
+  import { getEnvironmentState } from "$lib/states"
 
   let { data, children } = $props()
 
   let { session } = data
 
   let open = $state(false)
+
+  const environment = getEnvironmentState()
 
   class NavItem {
     href: string
@@ -32,11 +35,15 @@
 
   $effect(() => {
     navItems = [
-      new NavItem("/account", "home", (href) => $page.url.pathname === href),
-      new NavItem("/account/billing", "Billing", (href) =>
+      new NavItem(
+        `/${environment.slug}`,
+        "home",
+        (href) => $page.url.pathname === href,
+      ),
+      new NavItem(`/${environment.slug}/billing`, "Billing", (href) =>
         $page.url.pathname.startsWith(href),
       ),
-      new NavItem("/account/settings", "Setting", (href) =>
+      new NavItem(`/${environment.slug}/settings`, "Setting", (href) =>
         $page.url.pathname.startsWith(href),
       ),
     ]
@@ -75,7 +82,7 @@
           <span class="flex-grow"></span>
           <li>
             <a
-              href="/account/sign_out"
+              href="/{environment.slug}/sign_out"
               class="{buttonVariants({ variant: 'ghost' })} w-full"
               onclick={() => (open = false)}
             >
@@ -105,7 +112,7 @@
       <span class="flex-grow"></span>
       <li>
         <a
-          href="/account/sign_out"
+          href="/{environment.slug}/sign_out"
           class="{buttonVariants({ variant: 'ghost' })} w-full"
         >
           Sign Out

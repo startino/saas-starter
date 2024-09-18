@@ -2,9 +2,13 @@
   import { invalidate } from "$app/navigation"
   import { onMount } from "svelte"
 
+  import { setEnvironmentState } from "$lib/states"
+
   let { data, children } = $props()
 
-  let { supabase, session } = data
+  let { supabase, session, environment } = data
+
+  setEnvironmentState(environment)
 
   $effect(() => {
     ;({ supabase, session } = data)
