@@ -3,8 +3,9 @@ import {
   PUBLIC_SUPABASE_URL,
 } from "$env/static/public"
 import { createBrowserClient } from "@supabase/ssr"
-import type { Tables } from "$lib/DatabaseDefinitions"
 import { redirect } from "@sveltejs/kit"
+
+import type { Tables } from "$lib/supabase/supabase.types"
 
 export const load = async ({ data, depends, url }) => {
   depends("supabase:auth")

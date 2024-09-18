@@ -1,5 +1,13 @@
 import { z } from "zod"
 
+export const environmentSchema = z.object({
+  name: z
+    .string()
+    .min(1, "The environment name is required")
+    .max(30, "The environment name can be at most 72 charaters long")
+    .regex(/^[a-z0-9+$]/i, "Environment name must be alphanumeric"),
+})
+
 export const emailSchema = z.object({
   email: z.string().email(),
 })

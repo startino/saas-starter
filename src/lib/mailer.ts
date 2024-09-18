@@ -3,7 +3,7 @@ import { env } from "$env/dynamic/private"
 import { PRIVATE_SUPABASE_SERVICE_ROLE } from "$env/static/private"
 import { PUBLIC_SUPABASE_URL } from "$env/static/public"
 import { createClient, type User } from "@supabase/supabase-js"
-import type { Database } from "$lib/DatabaseDefinitions"
+import type { Database } from "$lib/supabase/supabase.types"
 
 // Sends an email to the admin email address.
 // Does not throw errors, but logs them.

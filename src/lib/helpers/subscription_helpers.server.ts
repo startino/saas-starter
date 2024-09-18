@@ -1,5 +1,5 @@
 import type { SupabaseClient, Session } from "@supabase/supabase-js"
-import type { Database } from "$lib/DatabaseDefinitions"
+import type { Database } from "$lib/supabase/supabase.types"
 
 import { pricingPlans } from "$lib/pricing_plans"
 import { PRIVATE_STRIPE_API_KEY } from "$env/static/private"

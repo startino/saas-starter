@@ -4,6 +4,10 @@
   import * as DropDownMenu from "$lib/components/ui/dropdown-menu"
 
   import { WebsiteName } from "$lib/config"
+
+  let { data, children } = $props()
+
+  const user = data.user
 </script>
 
 <div class="flex py-4 bg-primary text-primary-foreground container mx-auto">
@@ -20,9 +24,15 @@
         >
       </li>
       <li class="md:mx-2">
-        <a href="/account" class={buttonVariants({ variant: "ghost" })}
-          >Account</a
-        >
+        {#if user?.is_anonymous}
+          <a href="/onboarding" class={buttonVariants({ variant: "ghost" })}>
+            Get Started
+          </a>
+        {:else}
+          <a href="/account" class={buttonVariants({ variant: "ghost" })}>
+            Get Started
+          </a>
+        {/if}
       </li>
     </ul>
 
@@ -45,7 +55,7 @@
 </div>
 
 <div class="">
-  <slot />
+  {@render children()}
 </div>
 
 <!-- Spacer grows so the footer can be at bottom on short pages -->
