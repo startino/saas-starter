@@ -42,7 +42,6 @@
               {#each plan.features as feature}
                 <li class="">{feature}</li>
               {/each}
-              <ul></ul>
             </ul>
           </div>
           <div class="pt-8">

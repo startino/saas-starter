@@ -1,23 +1,10 @@
 import type { PostgrestError } from "@supabase/supabase-js"
-import { error, redirect } from "@sveltejs/kit"
+import { error } from "@sveltejs/kit"
 
-export const load = async ({
-  locals: { supabase, safeGetSession },
-  params,
-}) => {
+export const load = async ({ locals: { supabase, safeGetSession } }) => {
   const { session, user } = await safeGetSession()
 
   try {
-    const { data: environment, error: envError } = await supabase
-      .from("environments")
-      .select()
-      .eq("slug", params.envSlug)
-      .single()
-
-    if (envError) {
-      throw envError
-    }
-
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select(`*`)
@@ -28,7 +15,7 @@ export const load = async ({
       throw profileError
     }
 
-    return { session, profile, user, environment }
+    return { session, profile, user }
   } catch (err) {
     const postgrestErr = err as PostgrestError
     console.log({ postgrestErr })

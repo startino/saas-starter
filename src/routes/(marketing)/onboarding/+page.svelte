@@ -7,10 +7,24 @@
   import { Input } from "$lib/components/ui/input"
   import { Button } from "$lib/components/ui/button"
   import * as Card from "$lib/components/ui/card"
+  import { goto } from "$app/navigation"
+  import { getEnvironmentState } from "$lib/states/environment.svelte.js"
 
-  let { data } = $props()
+  let { data, form: actionForm } = $props()
 
-  const form = superForm(data.form, { validators: zod(environmentSchema) })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  let envState = getEnvironmentState()
+
+  const form = superForm(data.form, {
+    validators: zod(environmentSchema),
+  })
+
+  $effect(() => {
+    if (actionForm?.env) {
+      envState.value = actionForm.env
+      goto(`/${actionForm.env.slug}`)
+    }
+  })
 
   const { form: formData, enhance, errors, delayed } = form
 </script>

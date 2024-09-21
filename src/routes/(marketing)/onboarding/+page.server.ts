@@ -2,7 +2,7 @@ import { setError, superValidate } from "sveltekit-superforms/server"
 import { zod } from "sveltekit-superforms/adapters"
 
 import { environmentSchema } from "$lib/schemas"
-import { fail, redirect } from "@sveltejs/kit"
+import { fail } from "@sveltejs/kit"
 import type { PostgrestError } from "@supabase/supabase-js"
 
 export const load = async () => {
@@ -19,7 +19,7 @@ export const actions = {
     const form = await superValidate(request, zod(environmentSchema))
 
     if (!form.valid) {
-      return fail(400, { form })
+      return fail(400, { form, env: null })
     }
 
     const slug = form.data.name.trim().toLowerCase().split(" ").join("-")
@@ -41,7 +41,7 @@ export const actions = {
           ...form.data,
           slug,
         })
-        .select("id")
+        .select("*")
         .single()
 
       if (envError) {
@@ -51,6 +51,8 @@ export const actions = {
       await supabaseServiceRole
         .from("environments_profiles")
         .insert({ environment_id: env?.id, profile_id: profile?.id })
+
+      return { form, env }
     } catch (err) {
       const error = err as PostgrestError
 
@@ -59,7 +61,5 @@ export const actions = {
       }
       return setError(form, "Something went wrong", { status: 500 })
     }
-
-    redirect(300, `/${slug}`)
   },
 }

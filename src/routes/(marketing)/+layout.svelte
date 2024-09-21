@@ -2,12 +2,16 @@
   import { Menu } from "lucide-svelte"
   import { Button, buttonVariants } from "$lib/components/ui/button"
   import * as DropDownMenu from "$lib/components/ui/dropdown-menu"
+  import { getEnvironmentState } from "$lib/states/environment.svelte"
 
   import { WebsiteName } from "$lib/config"
 
   let { data, children } = $props()
 
+  const environment = getEnvironmentState()
+
   const user = data.user
+  console.log(user?.is_anonymous || !environment.value)
 </script>
 
 <div class="flex py-4 bg-primary text-primary-foreground container mx-auto">
@@ -24,13 +28,16 @@
         >
       </li>
       <li class="md:mx-2">
-        {#if user?.is_anonymous}
+        {#if !environment.value}
           <a href="/onboarding" class={buttonVariants({ variant: "ghost" })}>
             Get Started
           </a>
         {:else}
-          <a href="/account" class={buttonVariants({ variant: "ghost" })}>
-            Get Started
+          <a
+            href="/{environment.value.name}"
+            class={buttonVariants({ variant: "ghost" })}
+          >
+            {environment.value.name}
           </a>
         {/if}
       </li>

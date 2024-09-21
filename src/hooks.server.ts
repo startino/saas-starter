@@ -4,7 +4,7 @@ import {
   PUBLIC_SUPABASE_ANON_KEY,
 } from "$env/static/public"
 import { PRIVATE_SUPABASE_SERVICE_ROLE } from "$env/static/private"
-import { redirect, type Handle } from "@sveltejs/kit"
+import { type Handle } from "@sveltejs/kit"
 import { sequence } from "@sveltejs/kit/hooks"
 import { createServerClient } from "@supabase/ssr"
 import { createClient } from "@supabase/supabase-js"
@@ -35,6 +35,14 @@ const supabase: Handle = async ({ event, resolve }) => {
     },
   )
 
+  return resolve(event, {
+    filterSerializedResponseHeaders(name) {
+      return name === "content-range"
+    },
+  })
+}
+
+const auth: Handle = async ({ event, resolve }) => {
   /**
    * Unlike `supabase.auth.getSession()`, which returns the session _without_
    * validating the JWT, this function also calls `getUser()` to validate the
@@ -55,27 +63,21 @@ const supabase: Handle = async ({ event, resolve }) => {
     }
   }
 
-  return resolve(event, {
-    filterSerializedResponseHeaders(name) {
-      return name === "content-range"
-    },
-  })
-}
-
-const authGuard: Handle = async ({ event, resolve }) => {
-  const session = await event.locals.safeGetSession()
-  if (event.url.pathname.startsWith("/login")) {
-    if (
-      session?.user?.is_anonymous &&
-      event.url.pathname === "/login/sign_up"
-    ) {
-      return resolve(event)
-    } else if (session) {
-      return redirect(303, "/account")
-    }
-  }
+  event.locals.auth = await event.locals.safeGetSession()
 
   return resolve(event)
 }
 
-export const handle = sequence(supabase, authGuard)
+const environment: Handle = async ({ event, resolve }) => {
+  const { data } = await event.locals.supabase
+    .from("environments_profiles")
+    .select("env:environments (*)")
+    .eq("profile_id", event.locals.auth.user?.id as string)
+
+  event.locals.environment = data?.[0] ? data[0].env : null
+  console.log(data)
+
+  return resolve(event)
+}
+
+export const handle = sequence(supabase, auth, environment)

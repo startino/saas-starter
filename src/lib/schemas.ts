@@ -1,5 +1,30 @@
 import { z } from "zod"
 
+export const otpCodeSchema = z.object({
+  email: z.string().email(),
+  code: z
+    .string()
+    .length(6, "Must be a 6-digit code")
+    .regex(/^\d+$/, "Must be a 6-digit code"),
+})
+
+export const signUpSchema = z
+  .object({
+    email: z.string().email("Invalid email address"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .max(16, "Password must be at most 16 characters long")
+      .regex(
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/,
+        "For security sake, please include lowercase, uppercase letters and digits.",
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine(({ password, confirmPassword }) => password === confirmPassword, {
+    message: "The passwords did not match",
+  })
+
 export const environmentSchema = z.object({
   name: z
     .string()

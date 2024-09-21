@@ -4,7 +4,11 @@
   import { expoOut } from "svelte/easing"
   import { slide } from "svelte/transition"
 
-  let { children } = $props()
+  import { setEnvironmentState } from "$lib/states"
+
+  let { children, data } = $props()
+
+  setEnvironmentState(data.environment)
 </script>
 
 {#if $navigating}

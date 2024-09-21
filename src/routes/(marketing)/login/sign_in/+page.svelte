@@ -8,19 +8,19 @@
   let { data } = $props()
   let { supabase } = data
 
-  onMount(() => {
-    supabase.auth.onAuthStateChange((event) => {
-      // Redirect to account after successful login
-      if (event == "SIGNED_IN") {
-        // Delay needed because order of callback not guaranteed.
-        // Give the layout callback priority to update state or
-        // we'll just bounch back to login when /account tries to load
-        setTimeout(() => {
-          goto("/account")
-        }, 1)
-      }
-    })
-  })
+  // onMount(() => {
+  //   supabase.auth.onAuthStateChange((event) => {
+  //     // Redirect to account after successful login
+  //     if (event == "SIGNED_IN") {
+  //       // Delay needed because order of callback not guaranteed.
+  //       // Give the layout callback priority to update state or
+  //       // we'll just bounch back to login when /account tries to load
+  //       setTimeout(() => {
+  //         goto("/account")
+  //       }, 1)
+  //     }
+  //   })
+  // })
 </script>
 
 <svelte:head>

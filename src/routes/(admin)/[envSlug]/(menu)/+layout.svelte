@@ -36,14 +36,14 @@
   $effect(() => {
     navItems = [
       new NavItem(
-        `/${environment.slug}`,
+        `/${environment.value?.slug}`,
         "home",
         (href) => $page.url.pathname === href,
       ),
-      new NavItem(`/${environment.slug}/billing`, "Billing", (href) =>
+      new NavItem(`/${environment.value?.slug}/billing`, "Billing", (href) =>
         $page.url.pathname.startsWith(href),
       ),
-      new NavItem(`/${environment.slug}/settings`, "Setting", (href) =>
+      new NavItem(`/${environment.value?.slug}/settings`, "Setting", (href) =>
         $page.url.pathname.startsWith(href),
       ),
     ]
@@ -82,7 +82,7 @@
           <span class="flex-grow"></span>
           <li>
             <a
-              href="/{environment.slug}/sign_out"
+              href="/{environment.value?.slug}/sign_out"
               class="{buttonVariants({ variant: 'ghost' })} w-full"
               onclick={() => (open = false)}
             >
@@ -112,7 +112,7 @@
       <span class="flex-grow"></span>
       <li>
         <a
-          href="/{environment.slug}/sign_out"
+          href="/{environment.value?.slug}/sign_out"
           class="{buttonVariants({ variant: 'ghost' })} w-full"
         >
           Sign Out
