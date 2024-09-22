@@ -8,5 +8,5 @@
   data-sveltekit-preload-data="off"
   href={data.confirmationUrl}
   size="lg"
-  class=" mt-11 mx-auto">Confirm your email: {data.email}</Button
+  class="mt-11 mx-auto">Confirm your email: {data.email}</Button
 >

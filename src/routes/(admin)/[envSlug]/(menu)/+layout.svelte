@@ -112,7 +112,7 @@
       <span class="flex-grow"></span>
       <li>
         <a
-          href="/{environment.value?.slug}/sign_out"
+          href="/sign_out"
           class="{buttonVariants({ variant: 'ghost' })} w-full"
         >
           Sign Out

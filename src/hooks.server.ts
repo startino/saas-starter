@@ -75,7 +75,6 @@ const environment: Handle = async ({ event, resolve }) => {
     .eq("profile_id", event.locals.auth.user?.id as string)
 
   event.locals.environment = data?.[0] ? data[0].env : null
-  console.log(data)
 
   return resolve(event)
 }

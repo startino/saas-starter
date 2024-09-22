@@ -2,7 +2,7 @@
 import { redirect } from "@sveltejs/kit"
 import { isAuthApiError } from "@supabase/supabase-js"
 
-export const GET = async ({ url, locals: { supabase } }) => {
+export const GET = async ({ url, locals: { supabase, environment } }) => {
   const code = url.searchParams.get("code")
   if (code) {
     try {
@@ -23,5 +23,9 @@ export const GET = async ({ url, locals: { supabase } }) => {
     redirect(303, next)
   }
 
-  redirect(303, "/account")
+  if (environment) {
+    redirect(303, `/${environment.slug}`)
+  }
+
+  redirect(303, "/onboarding")
 }

@@ -4,12 +4,12 @@ import {
 } from "$env/static/public"
 import { createBrowserClient } from "@supabase/ssr"
 
-import type { Tables } from "$lib/supabase/supabase.types"
+import type { Database, Tables } from "$lib/supabase/supabase.types"
 
 export const load = async ({ data, depends }) => {
   depends("supabase:auth")
 
-  const supabase = createBrowserClient(
+  const supabase = createBrowserClient<Database>(
     PUBLIC_SUPABASE_URL,
     PUBLIC_SUPABASE_ANON_KEY,
   )

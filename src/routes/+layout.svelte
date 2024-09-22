@@ -9,6 +9,10 @@
   let { children, data } = $props()
 
   setEnvironmentState(data.environment)
+
+  $effect(() => {
+    setEnvironmentState(data.environment)
+  })
 </script>
 
 {#if $navigating}

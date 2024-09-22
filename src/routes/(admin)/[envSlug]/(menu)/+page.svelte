@@ -1,5 +1,12 @@
 <script lang="ts">
+  import { invalidate } from "$app/navigation"
+
   import * as Alert from "$lib/components/ui/alert"
+  import { onMount } from "svelte"
+
+  onMount(async () => {
+    invalidate("data:init")
+  })
 </script>
 
 <svelte:head>

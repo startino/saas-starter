@@ -7,11 +7,7 @@
   import { WebsiteName } from "$lib/config"
 
   let { data, children } = $props()
-
   const environment = getEnvironmentState()
-
-  const user = data.user
-  console.log(user?.is_anonymous || !environment.value)
 </script>
 
 <div class="flex py-4 bg-primary text-primary-foreground container mx-auto">
@@ -27,6 +23,20 @@
           >Pricing</a
         >
       </li>
+      {#if data.auth.user?.is_anonymous && !environment.value}
+        <li class="md:mx-2">
+          <a href="/login/sign_in" class={buttonVariants({ variant: "ghost" })}
+            >Sign In</a
+          >
+        </li>
+      {/if}
+      {#if !data.auth.user?.is_anonymous}
+        <li class="md:mx-2">
+          <a href="/sign_out" class={buttonVariants({ variant: "ghost" })}
+            >Sign Out</a
+          >
+        </li>
+      {/if}
       <li class="md:mx-2">
         {#if !environment.value}
           <a href="/onboarding" class={buttonVariants({ variant: "ghost" })}>
