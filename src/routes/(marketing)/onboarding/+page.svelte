@@ -34,7 +34,7 @@
   $effect(() => {
     if (actionForm?.env) {
       envState.value = actionForm.env
-      goto(`/${actionForm.env.slug}`)
+      goto(`/dashboard/${actionForm.env.slug}`)
     }
   })
 
