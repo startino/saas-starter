@@ -13,6 +13,8 @@
 
   let open = $state(false)
 
+  const basePath = "/dashboard/"
+
   const environment = getEnvironmentState()
 
   class NavItem {
@@ -36,15 +38,19 @@
   $effect(() => {
     navItems = [
       new NavItem(
-        `/${environment.value?.slug}`,
+        `${basePath}${environment.value?.slug}`,
         "home",
         (href) => $page.url.pathname === href,
       ),
-      new NavItem(`/${environment.value?.slug}/billing`, "Billing", (href) =>
-        $page.url.pathname.startsWith(href),
+      new NavItem(
+        `${basePath}${environment.value?.slug}/billing`,
+        "Billing",
+        (href) => $page.url.pathname.startsWith(href),
       ),
-      new NavItem(`/${environment.value?.slug}/settings`, "Setting", (href) =>
-        $page.url.pathname.startsWith(href),
+      new NavItem(
+        `${basePath}${environment.value?.slug}/settings`,
+        "Setting",
+        (href) => $page.url.pathname.startsWith(href),
       ),
     ]
   })

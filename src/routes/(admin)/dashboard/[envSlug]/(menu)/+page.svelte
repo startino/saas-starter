@@ -33,10 +33,6 @@
       This page is just a placeholder. Replace this page with your app's content
       and functionality.
     </div>
-    <div class="my-2">
-      The <a href="/account/billing" class="underline">billing</a> and
-      <a href="/account/settings" class="underline">settings</a> pages are functional
-      demos.
-    </div>
+    <div class="my-2">The billing and settings pages are functional demos.</div>
   </div>
 </Alert.Root>
