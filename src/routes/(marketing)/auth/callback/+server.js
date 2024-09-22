@@ -23,5 +23,5 @@ export const GET = async ({ url, locals: { supabase } }) => {
     redirect(303, next)
   }
 
-  redirect(303, "/onboarding")
+  redirect(303, "/find-env")
 }
