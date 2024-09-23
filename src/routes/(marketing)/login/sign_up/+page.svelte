@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Github } from "lucide-svelte"
+
   import * as Form from "$lib/components/ui/form"
   import * as Card from "$lib/components/ui/card"
   import { superForm } from "sveltekit-superforms"
@@ -6,10 +8,13 @@
   import { otpCodeSchema, signUpSchema } from "$lib/schemas"
   import { Input } from "$lib/components/ui/input"
   import { Button } from "$lib/components/ui/button"
+  import { Separator } from "$lib/components/ui/separator"
 
   let { data } = $props()
 
   let step: "signup" | "confirmation" = $state("signup")
+  let oauthSigningUp = $state(false)
+  let oauthError = $state<string | null>(null)
 
   const signUpForm = superForm(data.signUpForm, {
     validators: zodClient(signUpSchema),
@@ -31,6 +36,7 @@
     errors: signUpErrors,
     constraints: signUpConstraints,
   } = signUpForm
+
   const {
     form: otpFormData,
     enhance: otpEnhance,
@@ -38,6 +44,28 @@
     errors: otpErrors,
     constraints: otpConstraints,
   } = otpForm
+
+  let signingUp = $derived(oauthSigningUp || $signUpDelayed)
+
+  const oauthSignUp = async (provider: "google" | "github") => {
+    oauthSigningUp = true
+    oauthError = null
+
+    const { data: oauthData, error } = await data.supabase.auth.linkIdentity({
+      provider,
+    })
+
+    if (error) {
+      console.error({ error })
+      oauthError = `${provider} authentication failed. Please try again`
+    }
+
+    if (oauthData && oauthData.url) {
+      window.location.href = oauthData.url
+    }
+
+    oauthSigningUp = false
+  }
 </script>
 
 <svelte:head>
@@ -50,6 +78,15 @@
       <Card.Title class="text-2xl font-bold text-center">Sign Up</Card.Title>
     </Card.Header>
     <Card.Content>
+      <div class="flex justify-center">
+        <Button
+          aria-label="Sign up with github"
+          size="icon"
+          disabled={signingUp}
+          onclick={() => oauthSignUp("github")}><Github /></Button
+        >
+      </div>
+      <Separator class="my-4" />
       <form
         method="post"
         action="?/signup"
@@ -100,8 +137,8 @@
           </p>
         {/if}
 
-        <Button type="submit" disabled={$signUpDelayed} class="w-full">
-          {#if $signUpDelayed}
+        <Button type="submit" disabled={signingUp} class="w-full">
+          {#if signingUp}
             ...
           {:else}
             Sign Up

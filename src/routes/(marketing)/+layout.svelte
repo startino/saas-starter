@@ -44,7 +44,7 @@
           </a>
         {:else}
           <a
-            href="/dashboard/{environment.value.name}"
+            href="/dashboard/{environment.value.slug}"
             class={buttonVariants({ variant: "ghost" })}
           >
             {environment.value.name}
