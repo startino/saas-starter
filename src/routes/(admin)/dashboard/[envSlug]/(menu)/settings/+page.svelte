@@ -4,7 +4,7 @@
   import { buttonVariants } from "$lib/components/ui/button"
 
   let { data } = $props()
-  let { profile, user } = data
+  let { profile, auth } = data
 
   const environment = getEnvironmentState()
 </script>
@@ -14,7 +14,7 @@
 </svelte:head>
 
 <h1 class="text-2xl font-bold mb-6">Settings</h1>
-{#if !user?.is_anonymous}
+{#if !auth.user?.is_anonymous}
   <SettingsModule
     title="Profile"
     editable={false}
@@ -32,15 +32,15 @@
       },
     ]}
     editButtonTitle="Edit Profile"
-    editLink="/{environment.slug}/settings/edit_profile"
+    editLink="/dashboard/{environment.value?.slug}/settings/edit_profile"
   />
 
   <SettingsModule
     title="Email"
     editable={false}
-    fields={[{ id: "email", initialValue: user?.email || "" }]}
+    fields={[{ id: "email", initialValue: auth.user?.email || "" }]}
     editButtonTitle="Change Email"
-    editLink="/{environment.slug}/settings/change_email"
+    editLink="/dashboard/{environment.value?.slug}/settings/change_email"
   />
 
   <SettingsModule
@@ -48,7 +48,7 @@
     editable={false}
     fields={[{ id: "password", initialValue: "••••••••••••••••" }]}
     editButtonTitle="Change Password"
-    editLink="/{environment.slug}/settings/change_password"
+    editLink="/dashboard/{environment.value?.slug}/settings/change_password"
   />
 
   <SettingsModule
@@ -61,7 +61,8 @@
       },
     ]}
     editButtonTitle="Change Subscription"
-    editLink="/{environment.slug}/settings/change_email_subscription"
+    editLink="/dashboard/{environment.value
+      ?.slug}/settings/change_email_subscription"
   />
 
   <SettingsModule
@@ -70,7 +71,7 @@
     dangerous={true}
     fields={[]}
     editButtonTitle="Delete Account"
-    editLink="/{environment.slug}/settings/delete_account"
+    editLink="/dashboard/{environment.value?.slug}/settings/delete_account"
   />
 {:else}
   <p>
