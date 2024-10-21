@@ -55,6 +55,7 @@ export const actions = {
       return { form, env }
     } catch (err) {
       const error = err as PostgrestError
+      console.log(err)
 
       if (error.code === "23505") {
         return setError(form, "Environment name already taken", { status: 403 })

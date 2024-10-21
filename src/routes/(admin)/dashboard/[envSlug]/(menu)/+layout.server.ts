@@ -16,6 +16,6 @@ export const load = async ({ locals: { environment, supabase }, params }) => {
   }
 
   if (data.id !== environment?.id) {
-    return error(403, "Not allowed")
+    return error(404)
   }
 }
