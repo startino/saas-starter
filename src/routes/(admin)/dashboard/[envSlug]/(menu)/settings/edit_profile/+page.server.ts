@@ -13,6 +13,7 @@ export const load = async ({ parent }) => {
       website: profile?.website ?? "",
     },
     zod(profileSchema),
+    { errors: false },
   )
 
   return { form }

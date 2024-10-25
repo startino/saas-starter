@@ -19,8 +19,8 @@
   title="Change Email"
   editable={true}
   successTitle="Email change initiated"
-  successBody="You should receive emails at both the old and new address to confirm the change. Please click the link in both emails to finalized the change. Until finalized, you must sign in with your current email."
-  formTarget="/account/api?/updateEmail"
+  successBody="You should receive an email at the new address to confirm the change. Please click the link in the email to finalized the change. Until finalized, you must sign in with your current email."
+  formTarget="/api?/updateEmail"
   fields={[
     {
       id: "email",

@@ -19,6 +19,10 @@
     type ProfileSchema,
   } from "$lib/schemas"
   import { enhance } from "$app/forms"
+  import { getEnvironmentState } from "$lib/states"
+  import { goto } from "$app/navigation"
+
+  const env = getEnvironmentState()
 
   const fieldError = (liveForm: FormAccountUpdateResult, name: string) => {
     let errors = liveForm?.errorFields ?? []
@@ -77,6 +81,7 @@
           validators: zodClient(schema),
           onUpdated: ({ form: f }) => {
             if (f.valid) {
+              redirectURL && goto(redirectURL)
               showSuccess = true
             }
           },
@@ -145,7 +150,9 @@
                         class="{fieldError($page?.form, field.id)
                           ? 'border-destructive'
                           : ''} w-full max-w-xs mb-3 py-4"
-                        value={$formData[field.id as keyof typeof $formData]}
+                        bind:value={$formData[
+                          field.id as keyof typeof $formData
+                        ]}
                         maxlength={field.maxlength ? field.maxlength : null}
                       />
 
@@ -206,7 +213,7 @@
           <div class="text-base">{successBody}</div>
         </div>
         <a
-          href="/account/settings"
+          href="/dashboard/{env.value?.name}/settings"
           class="{buttonVariants({ size: 'sm' })} mt-3 min-w-[145px]"
         >
           Return to Settings

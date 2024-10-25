@@ -6,9 +6,12 @@
   import * as Alert from "$lib/components/ui/alert"
   import { buttonVariants } from "$lib/components/ui/button"
   import { passwordSchema } from "$lib/schemas"
+  import { getEnvironmentState } from "$lib/states"
 
   let { data } = $props()
   let { session, supabase } = data
+
+  const env = getEnvironmentState()
 
   // True if definitely has a password, but can be false if they
   // logged in with oAuth or email link
@@ -34,7 +37,7 @@
     if (email) {
       supabase.auth
         .resetPasswordForEmail(email, {
-          redirectTo: `${$page.url.origin}/auth/callback?next=%2Faccount%2Fsettings%2Freset_password`,
+          redirectTo: `${$page.url.origin}/auth/callback?next=%2Fdashboard%2F${env.value?.name}%2Fsettings%2Freset_password`,
         })
         .then((d) => {
           sentEmail = d.error ? false : true
@@ -58,7 +61,7 @@
     saveButtonTitle="Change Password"
     successTitle="Password Changed"
     successBody="On next sign in, use your new password."
-    formTarget="/account/api?/updatePassword"
+    formTarget="/api?/updatePassword"
     fields={[
       {
         id: "newPassword1",

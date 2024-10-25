@@ -19,7 +19,7 @@
   editable={true}
   title="Edit Profile"
   successTitle="Saved Profile"
-  formTarget="/account/api?/updateProfile"
+  formTarget="/api?/updateProfile"
   fields={[
     {
       id: "full_name",

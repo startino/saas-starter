@@ -14,7 +14,7 @@
   saveButtonTitle="Reset Password"
   successTitle="Password Changed"
   successBody="On next sign in, use your new password."
-  formTarget="/account/api?/updatePassword"
+  formTarget="/api?/updatePassword"
   fields={[
     {
       id: "newPassword1",

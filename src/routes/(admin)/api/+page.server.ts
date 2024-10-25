@@ -54,6 +54,7 @@ export const actions = {
     const { error } = await supabase.auth.updateUser({ email: form.data.email })
 
     if (error) {
+      console.error(error)
       return setError(
         form,
         "Unknown error. If this persists please contact us.",
@@ -63,9 +64,7 @@ export const actions = {
       )
     }
 
-    return {
-      form,
-    }
+    redirect(303, `/login/confirm?email=${form.data.email}`)
   },
   updatePassword: async ({ request, locals: { supabase, safeGetSession } }) => {
     const { session } = await safeGetSession()
