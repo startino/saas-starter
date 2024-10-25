@@ -39,15 +39,18 @@
       {/if}
       <li class="md:mx-2">
         {#if !environment.value}
-          <a href="/onboarding" class={buttonVariants({ variant: "ghost" })}>
+          <a
+            href="/onboarding"
+            class={buttonVariants({ variant: "secondary" })}
+          >
             Get Started
           </a>
         {:else}
           <a
             href="/dashboard/{environment.value.slug}"
-            class={buttonVariants({ variant: "ghost" })}
+            class={buttonVariants({ variant: "secondary" })}
           >
-            {environment.value.name}
+            Dashboard
           </a>
         {/if}
       </li>
