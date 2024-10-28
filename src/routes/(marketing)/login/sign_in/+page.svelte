@@ -3,6 +3,7 @@
   import { sharedAppearance, oauthProviders } from "../login_config"
   import { goto } from "$app/navigation"
   import { onMount } from "svelte"
+  import { invalidate } from "$app/navigation"
   import { page } from "$app/stores"
 
   let { data } = $props()
@@ -18,7 +19,8 @@
         if (session?.user.is_anonymous) {
           return
         }
-        setTimeout(() => {
+        setTimeout(async () => {
+          invalidate("data:init")
           goto("/find-env")
         }, 1)
       }

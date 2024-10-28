@@ -5,9 +5,10 @@
   const env = getEnvironmentState()
 
   const { data } = $props()
-  onMount(async () => {
+
+  onMount(() => {
     env.value = null
-    await data.supabase.auth.signOut()
+    data.supabase.auth.signOut()
   })
 </script>
 
