@@ -62,11 +62,27 @@
           <Button builders={[builder]}><Menu /></Button>
         </DropDownMenu.Trigger>
         <DropDownMenu.Content class="w-56 sm:hidden">
-          <DropDownMenu.Item>
+          <DropDownMenu.Item class="md:mx-2">
             <a href="/pricing" class="w-full">Pricing</a>
           </DropDownMenu.Item>
-          <DropDownMenu.Item>
-            <a href="/account" class="w-full">Account</a>
+          {#if data.auth.user?.is_anonymous && !environment.value}
+            <DropDownMenu.Item class="md:mx-2">
+              <a href="/login/sign_in">Sign In</a>
+            </DropDownMenu.Item>
+          {/if}
+          {#if !data.auth.user?.is_anonymous}
+            <DropDownMenu.Item class="md:mx-2">
+              <a href="/sign_out" class="w-full">Sign Out</a>
+            </DropDownMenu.Item>
+          {/if}
+          <DropDownMenu.Item class="md:mx-2">
+            {#if !environment.value}
+              <a href="/onboarding" class="w-full"> Get Started </a>
+            {:else}
+              <a href="/dashboard/{environment.value.slug}" class="w-full">
+                Dashboard
+              </a>
+            {/if}
           </DropDownMenu.Item>
         </DropDownMenu.Content>
       </DropDownMenu.Root>

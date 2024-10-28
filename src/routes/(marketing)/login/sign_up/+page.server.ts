@@ -26,6 +26,9 @@ export const actions = {
     const { error: userError } = await supabase.auth.updateUser({
       password: form.data.password,
       email: form.data.email,
+      data: {
+        hasPassword: true,
+      },
     })
 
     if (userError) {

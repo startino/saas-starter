@@ -5,7 +5,7 @@ import { setError, superValidate } from "sveltekit-superforms"
 import {
   profileSchema,
   emailSchema,
-  passwordSchema,
+  changePasswordSchema,
   deleteAccountSchema,
 } from "$lib/schemas"
 
@@ -72,17 +72,15 @@ export const actions = {
       redirect(303, "/login")
     }
 
-    const form = await superValidate(request, zod(passwordSchema))
+    const form = await superValidate(request, zod(changePasswordSchema))
 
-    // Can check if we're a "password recovery" session by checking session amr
-    // let currentPassword take priority if provided (user can use either form)
-    // @ts-expect-error: we ignore because Supabase does not maintain an AMR typedef
-    const recoveryAmr = session.user?.amr?.find((x) => x.method === "recovery")
-    const isRecoverySession = recoveryAmr && !form.data.currentPassword
+    const isRecoverySession =
+      session.user.recovery_sent_at && !form.data.currentPassword
 
     // if this is password recovery session, check timestamp of recovery session
     if (isRecoverySession) {
-      const timeSinceLogin = Date.now() - recoveryAmr.timestamp * 1000
+      const timeSinceLogin =
+        Date.now() - Date.parse(session.user.recovery_sent_at as string) * 1000
       if (timeSinceLogin > 1000 * 60 * 15) {
         // 15 mins in milliseconds
         return setError(
@@ -108,15 +106,22 @@ export const actions = {
         password: form.data.currentPassword,
       })
       if (error) {
+        await supabase.auth.signOut()
         // The user was logged out because of bad password. Redirect to error page explaining.
         redirect(303, "/login/current_password_error")
       }
     }
 
     const { error } = await supabase.auth.updateUser({
+      email: session.user.email,
       password: form.data.newPassword1,
+      data: {
+        hasPassword: true,
+      },
     })
     if (error) {
+      console.log(error)
+
       return setError(
         form,
         "Unknown error. If this persists please contact us.",

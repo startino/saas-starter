@@ -1,3 +1,16 @@
+<script lang="ts">
+  import { getEnvironmentState } from "$lib/states"
+  import { onMount } from "svelte"
+
+  const env = getEnvironmentState()
+
+  const { data } = $props()
+  onMount(async () => {
+    env.value = null
+    await data.supabase.auth.signOut()
+  })
+</script>
+
 <svelte:head>
   <title>Current Password Incorrect</title>
 </svelte:head>
@@ -14,5 +27,7 @@
   > and try again.
 </p>
 <p class="mt-6">
-  If you forget your password <a href="/login/forgot_password" class="underline">reset it</a>.
+  If you forget your password <a href="/login/forgot_password" class="underline"
+    >reset it</a
+  >.
 </p>

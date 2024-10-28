@@ -5,7 +5,7 @@
   import * as Card from "$lib/components/ui/card"
   import * as Alert from "$lib/components/ui/alert"
   import { buttonVariants } from "$lib/components/ui/button"
-  import { passwordSchema } from "$lib/schemas"
+  import { changePasswordSchema } from "$lib/schemas"
   import { getEnvironmentState } from "$lib/states"
 
   let { data } = $props()
@@ -16,13 +16,11 @@
   // True if definitely has a password, but can be false if they
   // logged in with oAuth or email link
 
-  // @ts-expect-error: we ignore because Supabase does not maintain an AMR typedef
-  let hasPassword = session?.user?.amr?.find((x) => x.method === "password")
-    ? true
-    : false
+  let hasPassword = Boolean(session?.user.user_metadata.hasPassword)
 
-  // @ts-expect-error: we ignore because Supabase does not maintain an AMR typedef
-  let usingOAuth = session?.user?.amr?.find((x) => x.method === "oauth")
+  let usingOAuth = ["google", "github"].includes(
+    session?.user?.app_metadata?.provider ?? "",
+  )
     ? true
     : false
 
@@ -55,7 +53,7 @@
 {#if hasPassword}
   <SettingsModule
     data={data.form}
-    schema={passwordSchema}
+    schema={changePasswordSchema}
     title="Change Password"
     editable={true}
     saveButtonTitle="Change Password"

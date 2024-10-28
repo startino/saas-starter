@@ -15,12 +15,11 @@
   import {
     type EmailSchema,
     type DeleteAccountSchema,
-    type PasswordSchema,
+    type ChangePasswordSchema,
     type ProfileSchema,
   } from "$lib/schemas"
   import { enhance } from "$app/forms"
   import { getEnvironmentState } from "$lib/states"
-  import { goto } from "$app/navigation"
 
   const env = getEnvironmentState()
 
@@ -43,9 +42,15 @@
 
   type Props = {
     data?: SuperValidated<
-      Infer<EmailSchema | DeleteAccountSchema | PasswordSchema | ProfileSchema>
+      Infer<
+        EmailSchema | DeleteAccountSchema | ChangePasswordSchema | ProfileSchema
+      >
     >
-    schema?: EmailSchema | DeleteAccountSchema | PasswordSchema | ProfileSchema
+    schema?:
+      | EmailSchema
+      | DeleteAccountSchema
+      | ChangePasswordSchema
+      | ProfileSchema
     editable?: boolean
     dangerous?: boolean
     title?: string
@@ -81,7 +86,6 @@
           validators: zodClient(schema),
           onUpdated: ({ form: f }) => {
             if (f.valid) {
-              redirectURL && goto(redirectURL)
               showSuccess = true
             }
           },

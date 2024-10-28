@@ -39,14 +39,15 @@ export const emailSchema = z.object({
 
 export type EmailSchema = typeof emailSchema
 
-export const passwordSchema = z
+export const changePasswordSchema = z
   .object({
     currentPassword: z
       .string()
       .min(
         1,
         "You must include your current password. If you forgot it, sign out then use 'forgot password' on the sign in page.",
-      ),
+      )
+      .optional(),
     newPassword1: z
       .string()
       .min(6, "The new password must be at least 6 charaters long")
@@ -61,7 +62,7 @@ export const passwordSchema = z
     "The passwords don't match",
   )
 
-export type PasswordSchema = typeof passwordSchema
+export type ChangePasswordSchema = typeof changePasswordSchema
 
 export const deleteAccountSchema = z.object({
   currentPassword: z
