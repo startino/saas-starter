@@ -10,9 +10,11 @@
   let { supabase } = data
 
   onMount(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange(async (event, session) => {
       // Redirect to account after successful login
       if (event == "SIGNED_IN") {
+        await invalidate("data:init")
+
         // Delay needed because order of callback not guaranteed.
         // Give the layout callback priority to update state or
         // we'll just bounch back to login when /account tries to load
@@ -20,7 +22,6 @@
           return
         }
         setTimeout(async () => {
-          invalidate("data:init")
           goto("/find-env")
         }, 1)
       }
